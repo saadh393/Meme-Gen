@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meme Gen</title>
+    <link rel="stylesheet" href="./style/style.css" />
+    <link rel="stylesheet" href="./style/slider.css" />
+    <link rel="stylesheet" href="./style/picker.css" />
+    <script src="./scripts/fabric.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="actionButtons flex">
+        <a href="#" class="btn">Choose Template</a>
+        <a href="#" class="btn" id="--addText">Add Text</a>
+        <a href="#" class="btn">Add Image</a>
+        <input type="file" class="btn" id="addImage" accept="image/*" />
+      </div>
+      <canvas id="canvas" width="360px" height="640px"></canvas>
+    </div>
+
+    <!-- Main Menu Silder -->
+    <div class="slider" id="mainSlider">
+      <div class="slider-img">
+        <i class="far fa-image"></i>
+        <p>Template</p>
+      </div>
+
+      <div class="slider-img" id="dialogFont">
+        <i class="fas fa-paragraph"></i>
+        <p>Text</p>
+      </div>
+
+      <div class="slider-img">
+        <i class="far fa-images"></i>
+        <p>Image</p>
+      </div>
+
+      <div class="slider-img">
+        <i class="fas fa-shapes"></i>
+        <p>Shape</p>
+      </div>
+
+      <div class="slider-img">
+        <i class="fas fa-paint-brush"></i>
+        <p>Paint</p>
+      </div>
+    </div>
+
+    <!-- Font Properties-->
+    <div class="slider" id="font-slider-properties">
+      <div class="slider-img" id="addText">
+        <i class="far fa-image"></i>
+        <p>Text</p>
+      </div>
+
+      <div class="slider-img" id="chnageFont">
+        <i class="far fa-image"></i>
+        <p>Font</p>
+      </div>
+
+      <div class="slider-img" id="chnageSize">
+        <i class="far fa-image"></i>
+        <p>Size</p>
+      </div>
+
+      <div class="slider-img" id="chnageColor">
+        <i class="far fa-image"></i>
+        <p>Color</p>
+      </div>
+
+      <div class="slider-img" id="chnageShadow">
+        <i class="far fa-image"></i>
+        <p>Shadow</p>
+      </div>
+
+      <div class="slider-img" id="chnageFont">
+        <i class="far fa-image"></i>
+        <p>Stroke</p>
+      </div>
+    </div>
+
+    <!-- Font Family -->
+    <div class="popupContainer bgGreen1">
+      <div id="fontFamily-properties">
+        <p onclick="updateFont('Arial')">Arial</p>
+        <p onclick="updateFont('Helvetica')">Helvetica</p>
+        <p onclick="updateFont('Courier')">Courier</p>
+        <p onclick="updateFont('Neuzeit')">Neuzeit</p>
+        <p onclick="updateFont('Proxima Sans')">Proxima Sans</p>
+        <p onclick="updateFont('Hello Stockholm')">Hello Stockholm</p>
+        <p onclick="updateFont('Mightype')">Mightype</p>
+        <p onclick="updateFont('Selima')">Selima</p>
+        <p onclick="updateFont('Sweet Sensations')">Sweet Sensations</p>
+        <p onclick="updateFont('Bobbers')">Bobbers</p>
+      </div>
+    </div>
+
+    <!-- Hidden Popup Dialog Box -->
+    <div id="dialog">
+      <p align="left"><b>Text to Show</b></p>
+      <input
+        type="text"
+        id="textFortext"
+        value="Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+      />
+      <div class="btnBottom">
+        <a href="#" id="cancelText">Cancel</a>
+        <a href="#" id="btnForText">Ok</a>
+      </div>
+    </div>
+
+    <!-- Font Size Range Slider -->
+    <div class="popupContainer bgBlue1">
+      <div id="fontSizeController">
+        <h3>Font Size</h3>
+
+        <div class="range">
+          <div class="slideValue">
+            <span id="sliderVal">100</span>
+          </div>
+          <div class="field">
+            <div class="value left">5</div>
+            <input
+              type="range"
+              min="5"
+              max="50"
+              id="fontSizeSlider"
+              value="15"
+              step="1"
+            />
+            <div class="value right">50</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./scripts/script.js"></script>
+    <script src="./scripts/picker.js"></script>
+    <script>
+      $(function () {
+        $("#dialog").draggable();
+      });
+
+      // Visible Color Picker on Click "Color" btn from Font Properties Sub Menu
+      let colorPickerMenu = document.getElementById("chnageColor");
+      let picker = new ColorPicker(colorPickerMenu);
+    </script>
+  </body>
+</html>
+
+<!-- https://stackoverflow.com/questions/44010057/add-background-image-with-fabric-js -->

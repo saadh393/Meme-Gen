@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+:root{
+    --red400 : #ef5350;
+    --red500 : #f44336;
+    --red600 : #e53935;
+
+    --Purple400 : #EC407A;
+    --Purple600 : #D81B60;
+    --Purple800 : #AD1457;
+    
+    --Blue500 : #3F51B5;
+    --Blue700 : #303F9F;
+    --Blue800 : #1565C0;   
+
+    --Green500 : #4CAF50;
+    --Green600 : #43A047;
+    --Green700 : #00796B;
+    
+    --Orange500 : #FFC107;
+    --Orange600 : #FB8C00;
+    --Orange700 : #FF5722;
+
+    --fontSizeRange : #664aff;
+
+
+}
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    /* box-sizing: border-box; */
+    /* overflow: hidden; */
+}
+.container{
+    max-width: 360px; 
+    margin: 0 auto;
+
+}
+
+.flex{
+    display: flex;
+}
+
+.actionButtons{
+    /* margin-top : 20px; */
+    justify-content: space-between;
+}
+
+a{
+    color : #333;
+    text-decoration: none;
+    padding : 5px 15px;
+    border : 1px solid #fa807250;
+    border-radius: 2px;
+    box-shadow: 0 0 2px 0 salmon;
+    transition: .2s ease;
+}
+
+a:hover{
+    background-color: salmon;
+    color : #fff;
+}
+
+#canvas{
+    border : 1px solid #444;
+    margin-top : 10px;
+    border-radius: 2px;
+}
+
+/* Font Colors */
+.textRed1{color : var(--red400)}
+.textRed2{color : var(--red500)}
+.textRed3{color : var(--red600)}
+
+.textPurple1{color : var(--Purple400)}
+.textPurple2{color : var(--Purple600)}
+.textPurple3{color : var(--Purple800)}
+
+.textBlue1{color : var(--Blue500)}
+.textBlue2{color : var(--Blue700)}
+.textBlue3{color : var(--Blue800)}
+
+.textGreen1{color : var(--Green500)}
+.textGreen2{color : var(--Green600)}
+.textGreen3{color : var(--Green700)}
+
+.textOrange1{color : var(--Orange500)}
+.textOrange2{color : var(--Orange600)}
+.textOrange3{color : var(--Orange700)}
+
+/* Background Colors Colors */
+.bgRed1{background-color : var(--red400)}
+.bgRed2{background-color : var(--red500)}
+.bgRed3{background-color : var(--red600)}
+
+.bgPurple1{background-color : var(--Purple400)}
+.bgPurple2{background-color : var(--Purple600)}
+.bgPurple3{background-color : var(--Purple800)}
+
+.bgBlue1{background-color : var(--Blue500)}
+.bgBlue2{background-color : var(--Blue700)}
+.bgBlue3{background-color : var(--Blue800)}
+
+.bgGreen1{background-color : var(--Green500)}
+.bgGreen2{background-color : var(--Green600)}
+.bgGreen3{background-color : var(--Green700)}
+
+.bgOrange1{background-color : var(--Orange500)}
+.bgOrange2{background-color : var(--Orange600)}
+.bgOrange3{background-color : var(--Orange700)}
