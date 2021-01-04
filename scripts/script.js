@@ -12,6 +12,7 @@ defaultPropartyValues();
 mainMenuEvents();
 
 
+
 // Event : When Any Object is Selected
 canvas.on('object:selected', function(e) {
     cData.selectionType = e.target.type
@@ -19,16 +20,12 @@ canvas.on('object:selected', function(e) {
     if (e.target.type === 'textbox') {
         cData.fontStyle = canvas.getActiveObject().fontStyle
         cData.fontWeight = canvas.getActiveObject().fontWeight
+        cData.underline = canvas.getActiveObject().underline
+
         currentSelection = e.target
         contentDialogInput.value = e.target.text
         fontSliderProperties.show();
 
-        // Bold Background Color
-        if (cData.fontWeight == 'normal'){
-            document.querySelector('.btnBold').style.backgroundColor = "var(--Orange500)"
-        }else{
-            document.querySelector('.btnBold').style.backgroundColor = ""
-        }
     }
 });
 
@@ -44,7 +41,9 @@ canvas.on('selection:cleared', function(e) {
 
 })
 
-//removeBtn(); // for Remove Icon
+removeBtn(); // for Remove Icon
+
+
 
 // Setting Canvas Background
 let template = new Image(960, 862);
@@ -188,17 +187,6 @@ function init() {
 }
 
 function removeBtn() {
-    function formetterDiv(x, y){
-        x-=90
-        y-=11
-        var textFometter = `
-        <div class="textFormetter" style="padding : 2px; position:absolute;top:${y}px;left:${x}px;cursor:pointer;width:80px;height:20px;background-color:var(--Orange600); text-align-last: center;">
-        </div>
-    `
-    $(".canvas-container").append(textFometter);
-    }
-    
-
     function addDeleteBtn(x, y) {
         $(".deleteBtn").remove();
         var btnLeft = x + 0;
@@ -208,75 +196,102 @@ function removeBtn() {
     }
 
     // Bold btn
-    function btnBold() {
+    function btnBold(x, y) {
         $(".btnBold").remove();
-        let btnBold = '<img src="../icons/bold-text.svg" class="btnBold" style="cursor:pointer;width:20px;height:20px;"/>';
+        var btnLeft = x - 20;
+        var btnTop = y - 15;
+        let btnBold = '<img src="../icons/bold-text.svg" class="btnBold" style="position:absolute;top:' + btnTop + 'px;left:' + btnLeft + 'px;cursor:pointer;width:20px;height:20px;"/>';
         if (cData.selectionType != 'textbox') return
-        $(".textFormetter").append(btnBold)
+        $(".canvas-container").append(btnBold)
         // $(".canvas-container").append(btnBold);
     }
 
     // Bold btn
-    function btnItalic() {
+    function btnItalic(x, y) {
         $(".btnItalic").remove();
-        let btnItalic = '<img src="../icons/italic-text.svg" class="btnItalic" style="cursor:pointer;width:20px;height:20px;"/>';
+        var btnLeft = x - 40;
+        var btnTop = y - 15;
+        let btnItalic = '<img src="../icons/italic-text.svg" class="btnItalic" style="position:absolute;top:' + btnTop + 'px;left:' + btnLeft + 'px;cursor:pointer;width:20px;height:20px;"/>';
         if (cData.selectionType != 'textbox') return
-        $(".textFormetter").append(btnItalic);
+        $(".canvas-container").append(btnItalic);
     }
 
-    function btnUnderline(){
+    function btnUnderline(x, y){
         $(".btnUnderline").remove();
-        let btnUnderline = '<img src="../icons/italic-text.svg" class="btnUnderline" style="cursor:pointer;width:20px;height:20px;"/>';
+        var btnLeft = x - 60;
+        var btnTop = y - 15;
+        let btnUnderline = '<img src="../icons/underline-text.svg" class="btnUnderline" style="position:absolute;top:' + btnTop + 'px;left:' + btnLeft + 'px;cursor:pointer;width:20px;height:20px;"/>';
         if (cData.selectionType != 'textbox') return
-        $(".textFormetter").append(btnUnderline);
+        $(".canvas-container").append(btnUnderline);
     }
 
 
 
     canvas.on('object:selected', function(e) {
-        formetterDiv(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
         addDeleteBtn(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-        btnBold()
-        btnItalic()
+        btnBold(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
+        btnItalic(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
+        btnUnderline(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
+        console.log(cData.selectionType)
+        if(cData.selectionType == 'textbox'){
+            selectedTextItemActivity('object:selected')
+        }
+
+        
     });
 
     canvas.on('mouse:down', function(e) {
         if (!canvas.getActiveObject()) {
-            formetterDiv(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
             $(".deleteBtn").remove();
             $(".btnBold").remove();
             $(".btnItalic").remove();
-
+            $(".btnUnderline").remove();
+            
+            // if(cData.selectionType == 'textbox'){
+            //     selectedTextItemActivity()
+            // }
         }
     });
 
     canvas.on('object:modified', function(e) {
-        formetterDiv(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
         addDeleteBtn(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-        btnBold()
-        btnItalic()
-
+        btnBold(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
+        btnItalic(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
+        btnUnderline(e.target.oCoords.tr.x, e.target.oCoords.tr.y)
+        if(cData.selectionType == 'textbox'){
+            selectedTextItemActivity('object:modified')
+        }
     });
 
     canvas.on('object:scaling', function(e) {
-        $(".textFormetter").remove();
         $(".deleteBtn").remove();
         $(".btnBold").remove();
         $(".btnItalic").remove();
+        $(".btnUnderline").remove();
+
+        // if(cData.selectionType == 'textbox'){
+        //     selectedTextItemActivity('object:scaling')
+        // }
     });
 
     canvas.on('object:moving', function(e) {
-        $(".textFormetter").remove();
         $(".deleteBtn").remove();
         $(".btnBold").remove();
         $(".btnItalic").remove();
+        $(".btnUnderline").remove();
+        // if(cData.selectionType == 'textbox'){
+        //     selectedTextItemActivity('object:moving')
+        // }
     });
 
     canvas.on('object:rotating', function(e) {
-        $(".textFormetter").remove();
         $(".deleteBtn").remove();
         $(".btnBold").remove();
         $(".btnItalic").remove();
+        $(".btnUnderline").remove();
+        // if(cData.selectionType == 'textbox'){
+        //     selectedTextItemActivity('object:rotating')
+        // }
     });
 
     // Delete Button CLick Event
@@ -286,6 +301,7 @@ function removeBtn() {
             $(".deleteBtn").remove();
             $(".btnBold").remove();
             $(".btnItalic").remove();
+            $(".btnUnderline").remove();
         }
     });
 
@@ -310,11 +326,34 @@ function removeBtn() {
     // Italic Button CLick Event
     $(document).on('click', ".btnItalic", function() {
         if (canvas.getActiveObject()) {
-            let fontStyle = "normal"
-            cData.fontStyle == fontStyle ? fontStyle = "italic" : fontStyle = "normal";
-            canvas.getActiveObject().set("fontStyle", fontStyle);
+            if(cData.fontStyle == 'normal'){
+                canvas.getActiveObject().set("fontStyle", "italic");
+                document.querySelector('.btnItalic').style.backgroundColor = "var(--Orange500)"
+                cData.fontStyle = 'italic';
+            }else {
+                canvas.getActiveObject().set("fontStyle", "normal");
+                cData.fontStyle = 'normal';
+                document.querySelector('.btnItalic').style.backgroundColor = ""
+            }
             canvas.renderAll();
-            cData.fontStyle = fontStyle;
+
+        }
+    });
+
+    // Underline Button CLick Event
+    $(document).on('click', ".btnUnderline", function() {
+        if (canvas.getActiveObject()) {           
+            if(cData.underline == false){
+                canvas.getActiveObject().set("underline", true);
+                document.querySelector('.btnUnderline').style.backgroundColor = "var(--Orange500)"
+                cData.underline = true;
+            }else{
+                canvas.getActiveObject().set("underline", false);
+                document.querySelector('.btnUnderline').style.backgroundColor = ""
+                cData.underline = false;
+            }
+
+            canvas.renderAll();
         }
     });
 }
@@ -325,7 +364,7 @@ function fontsSubMenuVisibility() {
 }
 
 function updateFont(fontName) {
-    if (currentSelection == 0) return;
+    if (selectionType == 0) return;
     currentSelection.fontFamily = fontName;
     canvas.add(currentSelection).renderAll();
     fontFamilyProperties.fadeOut();
@@ -341,4 +380,28 @@ function updateFontSize() {
         canvas.add(currentSelection).renderAll();
 
     });
+}
+
+function selectedTextItemActivity(x){
+    console.table(x)
+    // Bold or Not
+    if (cData.fontWeight == 'normal'){
+        document.querySelector('.btnBold').style.backgroundColor = ""
+    }else{
+        document.querySelector('.btnBold').style.backgroundColor = "var(--Orange500)"
+    }
+
+    // Italic Or Not
+    if (cData.fontStyle == 'normal'){
+        document.querySelector('.btnItalic').style.backgroundColor = ""
+    }else{
+        document.querySelector('.btnItalic').style.backgroundColor = "var(--Orange500)"
+    }
+
+    // Underline Or Not
+    if (cData.underline == true){
+        document.querySelector('.btnUnderline').style.backgroundColor = "var(--Orange500)"
+    }else{
+        document.querySelector('.btnUnderline').style.backgroundColor = ""
+    }
 }
