@@ -1,6 +1,6 @@
 const cData = {
   selectionType: undefined,
-  alignment : undefined
+  alignment: undefined
 };
 // Initialize Values
 init();
@@ -16,19 +16,20 @@ canvas.on('object:selected', (e) => {
   cData.selectionType = e.target.type;
 
   if (e.target.type === 'textbox') {
-    cData.fontStyle = canvas.getActiveObject().fontStyle;
-    cData.fontWeight = canvas.getActiveObject().fontWeight;
-    cData.underline = canvas.getActiveObject().underline;
-    cData.alignment = canvas.getActiveObject().textAlign;
+      cData.fontStyle = canvas.getActiveObject().fontStyle;
+      cData.fontWeight = canvas.getActiveObject().fontWeight;
+      cData.underline = canvas.getActiveObject().underline;
+      cData.alignment = canvas.getActiveObject().textAlign;
 
-    currentSelection = e.target;
-    contentDialogInput.value = e.target.text;
-    fontSliderProperties.show();
+      currentSelection = e.target;
+      contentDialogInput.value = e.target.text;
+      fontSliderProperties.show();
   }
 });
 
 // Event : When Any Object is Deselected
 canvas.on('selection:cleared', (e) => {
+  console.log("selection:cleared")
   cData.selectionType = undefined;
   cData.alignment = undefined;
   // Add Text Customizations
@@ -37,6 +38,7 @@ canvas.on('selection:cleared', (e) => {
   fontSliderProperties.hide(); // style.display = 'none'
   fontFamilyProperties.hide();
   currentSelection = 0;
+  $(".textAlign").remove();
 });
 
 removeBtn(); // for Remove Icon
@@ -54,18 +56,18 @@ const addImage = document.getElementById('addImage');
 addImage.addEventListener('change', (e) => {
   const targetFile = e.target.files[0];
   const reader = new FileReader();
-  reader.onload = function (f) {
-    const imageRef = f.target.result;
-    fabric.Image.fromURL(imageRef, (img) => {
-      const oImage = img
-        .set({
-          left: 0,
-          top: 0,
-          angle: 0,
-        })
-        .scale(0.4);
-      canvas.add(oImage).renderAll();
-    });
+  reader.onload = function(f) {
+      const imageRef = f.target.result;
+      fabric.Image.fromURL(imageRef, (img) => {
+          const oImage = img
+              .set({
+                  left: 0,
+                  top: 0,
+                  angle: 0,
+              })
+              .scale(0.4);
+          canvas.add(oImage).renderAll();
+      });
   };
 
   reader.readAsDataURL(targetFile);
@@ -75,34 +77,34 @@ addImage.addEventListener('change', (e) => {
 btnAddText.addEventListener('click', () => {
   btnContentDialog.style.display = 'grid';
   contentDialogSubmit.addEventListener('click', (e) => {
-    if (currentSelection == 0) {
-      console.log('Creating New');
-      text = new fabric.Textbox(contentDialogInput.value, {
-        left: 100,
-        top: 100,
-      });
-      text.fontFamily = 'cursive';
-      text.centeredScaling = true;
-      canvas.add(text).renderAll();
-      fontsSubMenuVisibility();
-    } else {
-      currentSelection.text = contentDialogInput.value;
-      canvas.add(currentSelection).renderAll();
-      currentSelection = 0;
-    }
-    btnContentDialog.style.display = 'none';
-    contentDialogInput.value = '';
+      if (currentSelection == 0) {
+          console.log('Creating New');
+          text = new fabric.Textbox(contentDialogInput.value, {
+              left: 100,
+              top: 100,
+          });
+          text.fontFamily = 'cursive';
+          text.centeredScaling = true;
+          canvas.add(text).renderAll();
+          fontsSubMenuVisibility();
+      } else {
+          currentSelection.text = contentDialogInput.value;
+          canvas.add(currentSelection).renderAll();
+          currentSelection = 0;
+      }
+      btnContentDialog.style.display = 'none';
+      contentDialogInput.value = '';
   });
 
   document.getElementById('cancelText').addEventListener('click', () => {
-    btnContentDialog.style.display = 'none';
+      btnContentDialog.style.display = 'none';
   });
 });
 
 function mainMenuEvents() {
   // Text Sub Menu Bar Appearence Controller
   menuText.addEventListener('click', () => {
-    fontsSubMenuVisibility();
+      fontsSubMenuVisibility();
   });
 
   // Sub Menu Events
@@ -112,15 +114,15 @@ function mainMenuEvents() {
 function fontPropertiesEvents() {
   // Change Font Family
   chnageFont.on('click', () => {
-    if (currentSelection == 0) return;
-    fontFamilyProperties.fadeToggle(100, 'linear');
+      if (currentSelection == 0) return;
+      fontFamilyProperties.fadeToggle(100, 'linear');
   });
 
   // Change Font Size
   $('#chnageSize').on('click', () => {
-    if (currentSelection == 0) return;
-    updateFontSize();
-    fontSizeController.fadeToggle(100, 'linear');
+      if (currentSelection == 0) return;
+      updateFontSize();
+      fontSizeController.fadeToggle(100, 'linear');
   });
 }
 
@@ -133,9 +135,9 @@ function defaultPropartyValues() {
   fontSizeController.hide();
 
   fabric.Object.prototype.set({
-    transparentCorners: false,
-    borderColor: '#ff0000',
-    cornerColor: '#333',
+      transparentCorners: false,
+      borderColor: '#ff0000',
+      cornerColor: '#333',
   });
 
   // Font Size Controller
@@ -170,199 +172,186 @@ function init() {
 function removeBtn() {
 
   function textAlign(x, y) {
-    const left = x - 53;
-    const top = y + 20;
-    const textAlign = `<img src="../icons/left.svg" class="textAlign flootBtn" style="position:absolute;top:${top}px;left:${left}px;cursor:pointer;width:20px;height:20px;"/>`;
-    $('.canvas-container').append(textAlign);
+      $('.textAlign').remove();
+      const left = x - 53;
+      const top = y + 20;
+      const textAlign = `<img src="../icons/left.svg" class="textAlign flootBtn" style="position:absolute;top:${top}px;left:${left}px;cursor:pointer;width:20px;height:20px;"/>`;
+      if (cData.selectionType != 'textbox') return;
+      $('.canvas-container').append(textAlign);
   }
 
 
   function addDeleteBtn(x, y) {
-    $('.deleteBtn').remove();
-    const btnLeft = x + 0;
-    const btnTop = y - 15;
-    const deleteBtn = `<img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/close-222-1153172.png" class="deleteBtn" style="position:absolute;top:${btnTop}px;left:${btnLeft}px;cursor:pointer;width:20px;height:20px;"/>`;
-    $('.canvas-container').append(deleteBtn);
+      $('.deleteBtn').remove();
+      const btnLeft = x + 0;
+      const btnTop = y - 15;
+      const deleteBtn = `<img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/close-222-1153172.png" class="deleteBtn" style="position:absolute;top:${btnTop}px;left:${btnLeft}px;cursor:pointer;width:20px;height:20px;"/>`;
+      $('.canvas-container').append(deleteBtn);
   }
 
   // Bold btn
   function btnBold(x, y) {
-    $('.btnBold').remove();
-    const btnLeft = x - 20;
-    const btnTop = y - 15;
-    const btnBold = `<img src="../icons/bold-text.svg" class="btnBold" style="position:absolute;top:${
-      btnTop
-    }px;left:${
-      btnLeft
-    }px;cursor:pointer;width:20px;height:20px;"/>`;
-    if (cData.selectionType != 'textbox') return;
-    $('.canvas-container').append(btnBold);
-    // $(".canvas-container").append(btnBold);
+      $('.btnBold').remove();
+      const btnLeft = x - 53;
+      const btnTop = y + 90;
+      const btnBold = `<img src="../icons/bold-text.svg" class="btnBold flootBtn" style="position:absolute;top:${
+    btnTop
+  }px;left:${
+    btnLeft
+  }px;cursor:pointer;width:20px;height:20px;"/>`;
+      if (cData.selectionType != 'textbox') return;
+      $('.canvas-container').append(btnBold);
+      // $(".canvas-container").append(btnBold);
   }
 
   // Bold btn
   function btnItalic(x, y) {
-    $('.btnItalic').remove();
-    const btnLeft = x - 40;
-    const btnTop = y - 15;
-    const btnItalic = `<img src="../icons/italic-text.svg" class="btnItalic" style="position:absolute;top:${
-      btnTop
-    }px;left:${
-      btnLeft
-    }px;cursor:pointer;width:20px;height:20px;"/>`;
-    if (cData.selectionType != 'textbox') return;
-    $('.canvas-container').append(btnItalic);
+      $('.btnItalic').remove();
+      const btnLeft = x - 53;
+      const btnTop = y + 160;
+      const btnItalic = `<img src="../icons/italic-text.svg" class="btnItalic flootBtn" style="position:absolute;top:${
+    btnTop
+  }px;left:${
+    btnLeft
+  }px;cursor:pointer;width:20px;height:20px;"/>`;
+      if (cData.selectionType != 'textbox') return;
+      $('.canvas-container').append(btnItalic);
   }
 
   function btnUnderline(x, y) {
-    $('.btnUnderline').remove();
-    const btnLeft = x - 60;
-    const btnTop = y - 15;
-    const btnUnderline = `<img src="../icons/underline-text.svg" class="btnUnderline" style="position:absolute;top:${
-      btnTop
-    }px;left:${
-      btnLeft
-    }px;cursor:pointer;width:20px;height:20px;"/>`;
-    if (cData.selectionType != 'textbox') return;
-    $('.canvas-container').append(btnUnderline);
+      $('.btnUnderline').remove();
+      const btnLeft = x - 53;
+      const btnTop = y + 230;
+      const btnUnderline = `<img src="../icons/underline-text.svg" class="btnUnderline flootBtn" style="position:absolute;top:${
+    btnTop
+  }px;left:${
+    btnLeft
+  }px;cursor:pointer;width:20px;height:20px;"/>`;
+      if (cData.selectionType != 'textbox') return;
+      $('.canvas-container').append(btnUnderline);
   }
 
   canvas.on('object:selected', (e) => {
-    
-    addDeleteBtn(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-    btnBold(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-    btnItalic(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-    btnUnderline(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
+      addDeleteBtn(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
 
-    textAlign(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y)
-
-    if (cData.selectionType == 'textbox') {
-      selectedTextItemActivity('object:selected');
-    }
+      if (cData.selectionType == 'textbox') {
+          btnBold(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
+          textAlign(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y)
+          btnItalic(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
+          btnUnderline(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
+          selectedTextItemActivity('object:selected');
+      }
   });
 
   canvas.on('mouse:down', (e) => {
-    if (!canvas.getActiveObject()) {
-      $('.deleteBtn').remove();
-      $('.btnBold').remove();
-      $('.btnItalic').remove();
-      $('.btnUnderline').remove();
-      $(".textAlign").remove();
-    }
+      if (cData.selectionType != 'textbox') {
+          $('.textAlign').remove();
+          $('.btnBold').remove();
+          $('.btnItalic').remove();
+          $('.btnUnderline').remove();
+      }
+      if (!canvas.getActiveObject()) {
+          $('.deleteBtn').remove();
+      }
   });
 
   canvas.on('object:modified', (e) => {
     addDeleteBtn(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-    btnBold(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-    btnItalic(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-    btnUnderline(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-
-    if (cData.selectionType == 'textbox') {
-      selectedTextItemActivity('object:modified');
-    }
+    
+      if (cData.selectionType == 'textbox') {
+        selectedTextItemActivity('object:modified');
+      }
   });
 
   canvas.on('object:scaling', (e) => {
-    $('.deleteBtn').remove();
-    $('.btnBold').remove();
-    $('.btnItalic').remove();
-    $('.btnUnderline').remove();
-
+      $('.deleteBtn').remove();
   });
 
   canvas.on('object:moving', (e) => {
-    $('.deleteBtn').remove();
-    $('.btnBold').remove();
-    $('.btnItalic').remove();
-    $('.btnUnderline').remove();
-    
+      $('.deleteBtn').remove();
   });
 
   canvas.on('object:rotating', (e) => {
-    $('.deleteBtn').remove();
-    $('.btnBold').remove();
-    $('.btnItalic').remove();
-    $('.btnUnderline').remove();
-    
+      $('.deleteBtn').remove();
   });
 
   // Delete Button CLick Event
   $(document).on('click', '.deleteBtn', () => {
-    if (canvas.getActiveObject()) {
-      canvas.remove(canvas.getActiveObject());
-      $('.deleteBtn').remove();
-      $('.btnBold').remove();
-      $('.btnItalic').remove();
-      $('.btnUnderline').remove();
-      $(".textAlign").remove();
+      if (canvas.getActiveObject()) {
+          canvas.remove(canvas.getActiveObject());
+          $('.deleteBtn').remove();
+          $('.btnBold').remove();
+          $('.btnItalic').remove();
+          $('.btnUnderline').remove();
+          $(".textAlign").remove();
 
-    }
+      }
   });
 
   // Bold Button CLick Event
   $(document).on('click', '.btnBold', () => {
-    if (canvas.getActiveObject()) {
-      if (cData.fontWeight == 'normal') {
-        canvas.getActiveObject().set('fontWeight', 'bold');
-        document.querySelector('.btnBold').style.backgroundColor = 'var(--Orange500)';
-        cData.fontWeight = 'bold';
-      } else {
-        canvas.getActiveObject().set('fontWeight', 'normal');
-        document.querySelector('.btnBold').style.backgroundColor = '';
-        cData.fontWeight = 'normal';
-      }
+      if (canvas.getActiveObject()) {
+          if (cData.fontWeight == 'normal') {
+              canvas.getActiveObject().set('fontWeight', 'bold');
+              document.querySelector('.btnBold').style.backgroundColor = 'var(--Orange500)';
+              cData.fontWeight = 'bold';
+          } else {
+              canvas.getActiveObject().set('fontWeight', 'normal');
+              document.querySelector('.btnBold').style.backgroundColor = '';
+              cData.fontWeight = 'normal';
+          }
 
-      canvas.renderAll();
-    }
+          canvas.renderAll();
+      }
   });
 
   // Italic Button CLick Event
   $(document).on('click', '.btnItalic', () => {
-    if (canvas.getActiveObject()) {
-      if (cData.fontStyle == 'normal') {
-        canvas.getActiveObject().set('fontStyle', 'italic');
-        document.querySelector('.btnItalic').style.backgroundColor = 'var(--Orange500)';
-        cData.fontStyle = 'italic';
-      } else {
-        canvas.getActiveObject().set('fontStyle', 'normal');
-        cData.fontStyle = 'normal';
-        document.querySelector('.btnItalic').style.backgroundColor = '';
+      if (canvas.getActiveObject()) {
+          if (cData.fontStyle == 'normal') {
+              canvas.getActiveObject().set('fontStyle', 'italic');
+              document.querySelector('.btnItalic').style.backgroundColor = 'var(--Orange500)';
+              cData.fontStyle = 'italic';
+          } else {
+              canvas.getActiveObject().set('fontStyle', 'normal');
+              cData.fontStyle = 'normal';
+              document.querySelector('.btnItalic').style.backgroundColor = '';
+          }
+          canvas.renderAll();
       }
-      canvas.renderAll();
-    }
   });
 
   // Underline Button CLick Event
   $(document).on('click', '.btnUnderline', () => {
-    if (canvas.getActiveObject()) {
-      if (cData.underline == false) {
-        canvas.getActiveObject().set('underline', true);
-        document.querySelector('.btnUnderline').style.backgroundColor = 'var(--Orange500)';
-        cData.underline = true;
-      } else {
-        canvas.getActiveObject().set('underline', false);
-        document.querySelector('.btnUnderline').style.backgroundColor = '';
-        cData.underline = false;
+      if (canvas.getActiveObject()) {
+          if (cData.underline == false) {
+              canvas.getActiveObject().set('underline', true);
+              document.querySelector('.btnUnderline').style.backgroundColor = 'var(--Orange500)';
+              cData.underline = true;
+          } else {
+              canvas.getActiveObject().set('underline', false);
+              document.querySelector('.btnUnderline').style.backgroundColor = '';
+              cData.underline = false;
+          }
+
+          canvas.renderAll();
       }
-
-      canvas.renderAll();
-    }
   });
 
 
-   // textAlign Button CLick Event
+  // textAlign Button CLick Event
   $(document).on('click', '.textAlign', () => {
-    if (canvas.getActiveObject()) {
-      var alignments = ["left","center", "right", "justify"]
-      let i = alignments.indexOf(cData.alignment) % 4 + 1;
-      i > 3 ? i = 0 : i = i;
-      canvas.getActiveObject().set('textAlign', alignments[i]); 
-      canvas.renderAll();
-      cData.alignment = alignments[i]
-      $(".textAlign")[0].src = "../icons/" + alignments[i] + ".svg"
-    }
+      if (canvas.getActiveObject()) {
+          var alignments = ["left", "center", "right", "justify"]
+          let i = alignments.indexOf(cData.alignment) % 4 + 1;
+          i > 3 ? i = 0 : i = i;
+          canvas.getActiveObject().set('textAlign', alignments[i]);
+          canvas.renderAll();
+          cData.alignment = alignments[i]
+          $(".textAlign")[0].src = "../icons/" + alignments[i] + ".svg"
+      }
   });
-  
+
 }
 
 function fontsSubMenuVisibility() {
@@ -378,34 +367,34 @@ function updateFont(fontName) {
 
 function updateFontSize() {
   inputSlider.oninput = () => {
-    if (currentSelection == 0) return;
-    const val = inputSlider.value;
-    slideValue.textContent = val;
+      if (currentSelection == 0) return;
+      const val = inputSlider.value;
+      slideValue.textContent = val;
 
-    currentSelection.fontSize = val;
-    canvas.add(currentSelection).renderAll();
+      currentSelection.fontSize = val;
+      canvas.add(currentSelection).renderAll();
   };
 }
 
 function selectedTextItemActivity(x) {
   // Bold or Not
   if (cData.fontWeight == 'normal') {
-    document.querySelector('.btnBold').style.backgroundColor = '';
+      document.querySelector('.btnBold').style.backgroundColor = '';
   } else {
-    document.querySelector('.btnBold').style.backgroundColor = 'var(--Orange500)';
+      document.querySelector('.btnBold').style.backgroundColor = 'var(--Orange500)';
   }
 
   // Italic Or Not
   if (cData.fontStyle == 'normal') {
-    document.querySelector('.btnItalic').style.backgroundColor = '';
+      document.querySelector('.btnItalic').style.backgroundColor = '';
   } else {
-    document.querySelector('.btnItalic').style.backgroundColor = 'var(--Orange500)';
+      document.querySelector('.btnItalic').style.backgroundColor = 'var(--Orange500)';
   }
 
   // Underline Or Not
   if (cData.underline == true) {
-    document.querySelector('.btnUnderline').style.backgroundColor = 'var(--Orange500)';
+      document.querySelector('.btnUnderline').style.backgroundColor = 'var(--Orange500)';
   } else {
-    document.querySelector('.btnUnderline').style.backgroundColor = '';
+      document.querySelector('.btnUnderline').style.backgroundColor = '';
   }
 }
