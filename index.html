@@ -108,6 +108,7 @@
 
     <!-- Hidden Popup Dialog Box -->
     <div id="dialog">
+      <div class="backOverlay"></div>
       <p align="left"><b>Text to Show</b></p>
       <input
         type="text"
@@ -146,15 +147,16 @@
     </div>
 
     <script src="./scripts/script.js"></script>
-    <script src="./scripts/picker.js"></script>
+    <!-- <script src="./scripts/picker.js"></script> -->
+    <script src="./scripts/colorPicker.js"></script>
     <script>
       $(function () {
         $("#dialog").draggable();
       });
 
       // Visible Color Picker on Click "Color" btn from Font Properties Sub Menu
-      let colorPickerMenu = document.getElementById("chnageColor");
-      let picker = new ColorPicker(colorPickerMenu);
+      // let colorPickerMenu = document.getElementById("chnageColor");
+      // let picker = new ColorPicker(colorPickerMenu);
     </script>
   </body>
 </html>

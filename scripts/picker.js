@@ -36,8 +36,8 @@ function ColorPicker(element, color) {
         colorPicker.instance = event.target.colorPickerObj;
         document.getElementById('color_picker').style.display = 'block';
         document.getElementById('color_picker_bg').style.display = 'block';
-        if (event.target.getAttribute('data-color') != 'undefined')
-            updateColorDisplays(event.target.getAttribute('data-color'));
+        // if (event.target.getAttribute('data-color') != 'undefined')
+        //     updateColorDisplays(event.target.getAttribute('data-color'));
     });
 }
 (function() {
@@ -119,11 +119,11 @@ function ColorPicker(element, color) {
     } else {
         window.LSCustomColors = JSON.parse(localStorage.getItem('custom_colors'));
         for (let x = window.LSCustomColors[0].length - 1; x >= 0; x--) {
-            let customColorElem = document.createElement('BUTTON');
-            customColorElem.className = 'custom_colors_preview';
-            customColorElem.style.background = window.LSCustomColors[0][x];
-            customColorElem.setAttribute('data-custom-color', window.LSCustomColors[0][x]);
-            document.getElementById('custom_colors_box').appendChild(customColorElem);
+            // let customColorElem = document.createElement('BUTTON');
+            // customColorElem.className = 'custom_colors_preview';
+            // customColorElem.style.background = window.LSCustomColors[0][x];
+            // customColorElem.setAttribute('data-custom-color', window.LSCustomColors[0][x]);
+            // document.getElementById('custom_colors_box').appendChild(customColorElem);
         }
         if (window.LSCustomColors[0].length == 28)
             document.getElementById('custom_colors_add').style.display = 'none';
@@ -278,12 +278,12 @@ let hexAToRGBA = function(h, toHSL) {
 //     });
 // });
 
-document.getElementById('custom_colors_box').addEventListener('click', function(event) {
-    if (event.target.className == 'custom_colors_preview') {
-        const color = event.target.getAttribute('data-custom-color');
-        updateColorDisplays(color);
-    }
-});
+// document.getElementById('custom_colors_box').addEventListener('click', function(event) {
+//     if (event.target.className == 'custom_colors_preview') {
+//         const color = event.target.getAttribute('data-custom-color');
+//         updateColorDisplays(color);
+//     }
+// });
 let addCustomColor = function() {
     if (window.LSCustomColors[0].length == 27)
         document.getElementById('custom_colors_add').style.display = 'none';
@@ -292,26 +292,26 @@ let addCustomColor = function() {
     customColorElem.className = 'custom_colors_preview';
     customColorElem.style.background = color;
     customColorElem.setAttribute('data-custom-color', color);
-    document.getElementById('custom_colors_box').appendChild(customColorElem);
+    // document.getElementById('custom_colors_box').appendChild(customColorElem);
     window.LSCustomColors[0].unshift(color);
     localStorage.setItem('custom_colors', JSON.stringify(window.LSCustomColors));
 };
 document.getElementById('custom_colors_add').addEventListener('mouseup', function() {
     addCustomColor();
 });
-document.getElementById('custom_colors_box').addEventListener('contextmenu', function(event) {
-    if (event.target.className == 'custom_colors_preview') {
-        event.preventDefault();
-        const contextMenu = document.getElementById('color_context_menu');
-        contextMenu.style.display = 'block';
-        contextMenu.style.top = event.target.getBoundingClientRect().top + 25 + 'px';
-        contextMenu.style.left = event.target.getBoundingClientRect().left + 'px';
-        colorPicker.contextMenuElem = event.target;
-    }
-});
+// document.getElementById('custom_colors_box').addEventListener('contextmenu', function(event) {
+//     if (event.target.className == 'custom_colors_preview') {
+//         event.preventDefault();
+//         const contextMenu = document.getElementById('color_context_menu');
+//         contextMenu.style.display = 'block';
+//         contextMenu.style.top = event.target.getBoundingClientRect().top + 25 + 'px';
+//         contextMenu.style.left = event.target.getBoundingClientRect().left + 'px';
+//         colorPicker.contextMenuElem = event.target;
+//     }
+// });
 let clearSingleCustomColor = function(element) {
     const elemToRemove = element === undefined ? colorPicker.contextMenuElem : element;
-    document.getElementById('custom_colors_box').removeChild(elemToRemove);
+    // document.getElementById('custom_colors_box').removeChild(elemToRemove);
     window.LSCustomColors = {
         '0': []
     };
@@ -338,17 +338,17 @@ let clearSingleCustomColorTouch = function(event) {
         }
     }
 };
-document.getElementById('custom_colors_box').addEventListener('touchstart', function() {
-    clearSingleCustomColorTouch(event);
-}, {
-    passive: true
-});
+// document.getElementById('custom_colors_box').addEventListener('touchstart', function() {
+//     clearSingleCustomColorTouch(event);
+// }, {
+//     passive: true
+// });
 let clearAllCustomColors = function() {
     window.LSCustomColors = {
         '0': []
     };
     while (document.getElementsByClassName('custom_colors_preview').length > 0) {
-        document.getElementById('custom_colors_box').removeChild(document.getElementsByClassName('custom_colors_preview')[0]);
+        // document.getElementById('custom_colors_box').removeChild(document.getElementsByClassName('custom_colors_preview')[0]);
     }
     localStorage.setItem('custom_colors', JSON.stringify(window.LSCustomColors));
     document.getElementById('custom_colors_add').style.display = 'inline-block';
@@ -507,7 +507,6 @@ document.addEventListener('mouseup', function(event) {
         colorPicker.boxStatus = false;
         // Here You Go
         if (currentSelection === 0){ return};
-
         oldTxt = currentSelection.text
         currentSelection.text = " "
         currentSelection.text = oldTxt;

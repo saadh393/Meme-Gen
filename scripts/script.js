@@ -1,6 +1,7 @@
 const cData = {
   selectionType: undefined,
-  alignment: undefined
+    alignment: undefined,
+    activeMenu : []
 };
 // Initialize Values
 init();
@@ -38,7 +39,7 @@ canvas.on('selection:cleared', (e) => {
   fontSliderProperties.hide(); // style.display = 'none'
   fontFamilyProperties.hide();
   currentSelection = 0;
-  $(".textAlign").remove();
+  // $(".textAlign").remove();
 });
 
 removeBtn(); // for Remove Icon
@@ -175,9 +176,10 @@ function removeBtn() {
       $('.textAlign').remove();
       const left = x - 53;
       const top = y + 20;
-      const textAlign = `<img src="../icons/left.svg" class="textAlign flootBtn" style="position:absolute;top:${top}px;left:${left}px;cursor:pointer;width:20px;height:20px;"/>`;
+      const textAlign = `<img src="../icons/left.svg" class="textAlign flootBtn" style="display: none;position:absolute;top:${top}px;left:${left}px;cursor:pointer;width:20px;height:20px;"/>`;
       if (cData.selectionType != 'textbox') return;
-      $('.canvas-container').append(textAlign);
+    $('.canvas-container').append(textAlign);
+    $('.textAlign').show("slide", { direction: "right" }, 110);
   }
 
 
@@ -194,14 +196,14 @@ function removeBtn() {
       $('.btnBold').remove();
       const btnLeft = x - 53;
       const btnTop = y + 90;
-      const btnBold = `<img src="../icons/bold-text.svg" class="btnBold flootBtn" style="position:absolute;top:${
+      const btnBold = `<img src="../icons/bold-text.svg" class="btnBold flootBtn" style="display: none;position:absolute;top:${
     btnTop
   }px;left:${
     btnLeft
   }px;cursor:pointer;width:20px;height:20px;"/>`;
       if (cData.selectionType != 'textbox') return;
       $('.canvas-container').append(btnBold);
-      // $(".canvas-container").append(btnBold);
+      $('.btnBold').show("slide", { direction: "right" }, 130);
   }
 
   // Bold btn
@@ -209,26 +211,28 @@ function removeBtn() {
       $('.btnItalic').remove();
       const btnLeft = x - 53;
       const btnTop = y + 160;
-      const btnItalic = `<img src="../icons/italic-text.svg" class="btnItalic flootBtn" style="position:absolute;top:${
+      const btnItalic = `<img src="../icons/italic-text.svg" class="btnItalic flootBtn" style="display: none; position:absolute;top:${
     btnTop
   }px;left:${
     btnLeft
   }px;cursor:pointer;width:20px;height:20px;"/>`;
       if (cData.selectionType != 'textbox') return;
       $('.canvas-container').append(btnItalic);
+      $('.btnItalic').show("slide", { direction: "right" }, 150);
   }
 
   function btnUnderline(x, y) {
       $('.btnUnderline').remove();
       const btnLeft = x - 53;
       const btnTop = y + 230;
-      const btnUnderline = `<img src="../icons/underline-text.svg" class="btnUnderline flootBtn" style="position:absolute;top:${
+      const btnUnderline = `<img src="../icons/underline-text.svg" class="btnUnderline flootBtn" style="display: none;position:absolute;top:${
     btnTop
   }px;left:${
     btnLeft
   }px;cursor:pointer;width:20px;height:20px;"/>`;
       if (cData.selectionType != 'textbox') return;
       $('.canvas-container').append(btnUnderline);
+      $('.btnUnderline').show("slide", { direction: "right" }, 170);
   }
 
   canvas.on('object:selected', (e) => {
@@ -244,11 +248,13 @@ function removeBtn() {
   });
 
   canvas.on('mouse:down', (e) => {
-      if (cData.selectionType != 'textbox') {
-          $('.textAlign').remove();
-          $('.btnBold').remove();
-          $('.btnItalic').remove();
-          $('.btnUnderline').remove();
+    console.log('mouse:down')
+    if (cData.selectionType != 'textbox') {
+        $(".textAlign").hide('fade', 100, function () { $(".textAlign").remove(); });
+        $(".btnBold").hide('fade', 100, function () { $(".btnBold").remove(); });
+        $(".btnItalic").hide('fade', 100, function () { $(".btnItalic").remove(); });
+        $(".btnUnderline").hide('fade',100, function(){ $(".btnUnderline").remove(); });
+         
       }
       if (!canvas.getActiveObject()) {
           $('.deleteBtn').remove();
@@ -284,7 +290,6 @@ function removeBtn() {
           $('.btnItalic').remove();
           $('.btnUnderline').remove();
           $(".textAlign").remove();
-
       }
   });
 
