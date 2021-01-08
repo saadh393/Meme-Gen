@@ -1,7 +1,7 @@
 const cData = {
   selectionType: undefined,
     alignment: undefined,
-    activeMenu : []
+    activeFontMenu : []
 };
 // Initialize Values
 init();
@@ -44,6 +44,7 @@ canvas.on('selection:cleared', (e) => {
 
 removeBtn(); // for Remove Icon
 
+
 // Setting Canvas Background
 const template = new Image(960, 862);
 template.src = './templates/template1.jpg';
@@ -75,8 +76,11 @@ addImage.addEventListener('change', (e) => {
 });
 
 // Add Text
-btnAddText.addEventListener('click', () => {
-  btnContentDialog.style.display = 'grid';
+btnAddText.addEventListener('click', (e) => {
+    btnContentDialog.style.display = 'grid';
+    //removeInactiveDialogs()
+    cData.activeFontMenu.push('#dialog');
+
   contentDialogSubmit.addEventListener('click', (e) => {
       if (currentSelection == 0) {
           console.log('Creating New');
@@ -117,6 +121,9 @@ function fontPropertiesEvents() {
   chnageFont.on('click', () => {
       if (currentSelection == 0) return;
       fontFamilyProperties.fadeToggle(100, 'linear');
+      console.log(fontFamilyProperties.attr("class"))
+      removeInactiveDialogs()
+      cData.activeFontMenu.push("#fontFamily-properties");
   });
 
   // Change Font Size
@@ -124,6 +131,8 @@ function fontPropertiesEvents() {
       if (currentSelection == 0) return;
       updateFontSize();
       fontSizeController.fadeToggle(100, 'linear');
+      removeInactiveDialogs()
+      cData.activeFontMenu.push('#fontSizeController');
   });
 }
 
@@ -402,4 +411,17 @@ function selectedTextItemActivity(x) {
   } else {
       document.querySelector('.btnUnderline').style.backgroundColor = '';
   }
+}
+
+
+function removeInactiveDialogs() { 
+    cData.activeFontMenu.forEach((item) => { 
+        if ($(item).is(":visible")) {
+            $(item).fadeToggle(100, 'linear');
+        }
+        if (item == "#colorPickerDialog") {
+            $("#colorPickerDialog").remove();
+        }
+    })
+    cData.activeFontMenu = []
 }

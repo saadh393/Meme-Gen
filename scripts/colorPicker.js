@@ -5,7 +5,15 @@ btnColorPicker.on("click", () => {
         alert("You must have to select any text to pick any color.")
         return;
     }
-
+    
+    removeInactiveDialogs()
+    if ($('#colorPickerDialog')[0]) {
+        $("#colorPickerDialog").hide("slide", "up", 200, () => {
+            $("#colorPickerDialog").remove();
+        })
+        return
+    }
+    
     let colorPickerBox = `
         <h3> Pick Color For Your Text </h3>
         <input type="color" name="color" id="inputColor" width="100px" height="100px" />
@@ -40,4 +48,5 @@ btnColorPicker.on("click", () => {
         })
     })
 
+    cData.activeFontMenu.push("#colorPickerDialog");
 })

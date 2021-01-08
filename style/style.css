@@ -211,3 +211,14 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: 100%;
   box-shadow: 2px 2px 10px rgb(34, 34, 34);
 }
+
+.backOverlay {
+  background-color: #444;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  display: none;
+}
