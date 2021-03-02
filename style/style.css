@@ -222,3 +222,14 @@ input[type="color"]::-webkit-color-swatch {
   bottom: 0;
   display: none;
 }
+
+.bgGradient_1 {
+  background-image: linear-gradient(45deg, #ff8063, #f46060);
+  box-shadow: -2px 2px 13px #fb161670;
+}
+.vh {
+  width: 1.2px;
+  height: 85%;
+  background-color: #716969;
+  margin: 3px 6px;
+}
