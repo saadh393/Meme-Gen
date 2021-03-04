@@ -1,3 +1,11 @@
+/**
+ *  Abbreviations
+ *    1. Input Dialog Overlay = ido
+ *
+ *
+ *
+ */
+
 const cData = {
   selectionType: undefined,
   alignment: undefined,
@@ -23,7 +31,7 @@ canvas.on("object:selected", (e) => {
     cData.alignment = canvas.getActiveObject().textAlign;
 
     currentSelection = e.target;
-    contentDialogInput.value = e.target.text;
+    ido_Text.value = e.target.text;
     fontSliderProperties.show();
   }
 });
@@ -35,7 +43,7 @@ canvas.on("selection:cleared", (e) => {
   cData.alignment = undefined;
   // Add Text Customizations
   fontsSubMenuVisibility();
-  contentDialogInput.value = "";
+  ido_Text.value = "";
   fontSliderProperties.hide(); // style.display = 'none'
   fontFamilyProperties.hide();
   currentSelection = 0;
@@ -52,38 +60,45 @@ canvas.setBackgroundImage(template.src, canvas.renderAll.bind(canvas), {
   scaleY: canvas.height / 862,
 });
 
-// Adding Image
-const addImage = document.getElementById("addImage");
-addImage.addEventListener("change", (e) => {
-  const targetFile = e.target.files[0];
-  const reader = new FileReader();
-  reader.onload = function (f) {
-    const imageRef = f.target.result;
-    fabric.Image.fromURL(imageRef, (img) => {
-      const oImage = img
-        .set({
-          left: 0,
-          top: 0,
-          angle: 0,
-        })
-        .scale(0.4);
-      canvas.add(oImage).renderAll();
-    });
-  };
+/*  
+  This Piece of code used to choose template 
+  Uplaod image to Canvas
+  Add Text to The canvas
+  
+  Reference : HTML LINE => 23 
 
-  reader.readAsDataURL(targetFile);
-});
+*/
+// const addImage = document.getElementById("addImage");
+// addImage.addEventListener("change", (e) => {
+//   const targetFile = e.target.files[0];
+//   const reader = new FileReader();
+//   reader.onload = function (f) {
+//     const imageRef = f.target.result;
+//     fabric.Image.fromURL(imageRef, (img) => {
+//       const oImage = img
+//         .set({
+//           left: 0,
+//           top: 0,
+//           angle: 0,
+//         })
+//         .scale(0.4);
+//       canvas.add(oImage).renderAll();
+//     });
+//   };
+
+//   reader.readAsDataURL(targetFile);
+// });
 
 // Add Text
 btnAddText.addEventListener("click", (e) => {
-  btnContentDialog.style.display = "grid";
-  //removeInactiveDialogs()
-  cData.activeFontMenu.push("#dialog");
+  ido_Main.show();
+  removeInactiveDialogs();
+  cData.activeFontMenu.push("#dialog"); //> ido_main
 
-  contentDialogSubmit.addEventListener("click", (e) => {
+  ido_ok.addEventListener("click", (e) => {
     if (currentSelection == 0) {
-      console.log("Creating New");
-      text = new fabric.Textbox(contentDialogInput.value, {
+      // Creating New
+      text = new fabric.Textbox(ido_Text.value, {
         left: 100,
         top: 100,
       });
@@ -92,16 +107,76 @@ btnAddText.addEventListener("click", (e) => {
       canvas.add(text).renderAll();
       fontsSubMenuVisibility();
     } else {
-      currentSelection.text = contentDialogInput.value;
+      // Editing Existing
+      currentSelection.text = ido_Text.value;
       canvas.add(currentSelection).renderAll();
       currentSelection = 0;
     }
-    btnContentDialog.style.display = "none";
-    contentDialogInput.value = "";
+    ido_Main.hide();
+    // ido_Main.style.display = "none";
+    ido_Text.value = "";
   });
 
-  document.getElementById("cancelText").addEventListener("click", () => {
-    btnContentDialog.style.display = "none";
+  document.getElementById("ido_close").addEventListener("click", () => {
+    ido_Text.value = "";
+    ido_Main.hide();
+  });
+
+  /* Formating Area of ido */
+
+  // Bold
+  let ido_Bold = $("#formatingArea-bold");
+  ido_Bold.click(() => {
+    if (!idoData.bold) {
+      idoData.bold = true;
+      ido_Text.style.fontWeight = "bold";
+      ido_Bold[0].style.backgroundColor = "#ffa726";
+    } else {
+      idoData.bold = false;
+      ido_Bold.removeAttr("style");
+      ido_Text.style.fontWeight = "normal";
+    }
+  });
+
+  // Italic
+  let ido_Italic = $("#formatingArea-italic");
+  ido_Italic.click(() => {
+    if (!idoData.italic) {
+      idoData.italic = true;
+      ido_Text.style.fontStyle = "italic";
+      ido_Italic[0].style.backgroundColor = "#ffa726";
+    } else {
+      idoData.italic = false;
+      ido_Text.style.fontStyle = "normal";
+      ido_Italic.removeAttr("style");
+    }
+  });
+
+  // Underline
+  let ido_underline = $("#formatingArea-underline");
+  ido_underline.click(() => {
+    if (!idoData.underline) {
+      idoData.underline = true;
+      ido_Text.style.textDecoration = "underline";
+      ido_underline[0].style.backgroundColor = "#ffa726";
+    } else {
+      idoData.underline = false;
+      ido_Text.style.textDecoration = "auto";
+      ido_underline.removeAttr("style");
+    }
+  });
+
+  // Center - Left - Right
+  let ido_formateCenter = $("#formatingArea-center");
+  ido_formateCenter.click(() => {
+    !idoData.align ? (idoData.align = "center") : idoData;
+    let aligns = ["left", "right", "center", "justified"];
+    let i = aligns.indexOf(idoData.align) + 1;
+    i > 3 ? (i = 0) : i;
+    idoData.align = aligns[i];
+    ido_Text.style.textAlign = aligns[i];
+    ido_formateCenter.attr("src", `./icons/${aligns[i]}.svg`);
+    console.log();
   });
 });
 
@@ -152,6 +227,9 @@ function defaultPropartyValues() {
   // Font Size Controller
   //   slideValue.style.left = "45%";
   //   slideValue.textContent = inputSlider.value;
+
+  // Input Dialog Overlay - ido
+  ido_Main.hide();
 }
 
 function init() {
@@ -160,9 +238,9 @@ function init() {
 
   menuText = document.getElementById("dialogFont");
   btnAddText = document.getElementById("addText");
-  btnContentDialog = document.getElementById("dialog");
-  contentDialogInput = document.getElementById("textFortext");
-  contentDialogSubmit = document.getElementById("btnForText");
+  ido_Main = $("#ido_main"); //document.getElementById("ido_main");
+  ido_Text = document.getElementById("ido_Text");
+  ido_ok = document.getElementById("ido_ok");
   mainSlider = document.getElementById("mainSlider");
 
   // Main Menu
@@ -176,6 +254,9 @@ function init() {
   // Font Size Controller
   slideValue = document.getElementById("sliderVal");
   inputSlider = document.getElementById("fontSizeSlider");
+
+  // IDO Data holder for Text and AlignMents
+  idoData = {};
 }
 
 function removeBtn() {
@@ -299,8 +380,7 @@ function removeBtn() {
     if (canvas.getActiveObject()) {
       if (cData.fontWeight == "normal") {
         canvas.getActiveObject().set("fontWeight", "bold");
-        document.querySelector(".btnBold").style.backgroundColor =
-          "var(--Orange500)";
+        document.querySelector(".btnBold").style.backgroundColor = "var(--Orange500)";
         cData.fontWeight = "bold";
       } else {
         canvas.getActiveObject().set("fontWeight", "normal");
@@ -317,8 +397,7 @@ function removeBtn() {
     if (canvas.getActiveObject()) {
       if (cData.fontStyle == "normal") {
         canvas.getActiveObject().set("fontStyle", "italic");
-        document.querySelector(".btnItalic").style.backgroundColor =
-          "var(--Orange500)";
+        document.querySelector(".btnItalic").style.backgroundColor = "var(--Orange500)";
         cData.fontStyle = "italic";
       } else {
         canvas.getActiveObject().set("fontStyle", "normal");
@@ -334,8 +413,7 @@ function removeBtn() {
     if (canvas.getActiveObject()) {
       if (cData.underline == false) {
         canvas.getActiveObject().set("underline", true);
-        document.querySelector(".btnUnderline").style.backgroundColor =
-          "var(--Orange500)";
+        document.querySelector(".btnUnderline").style.backgroundColor = "var(--Orange500)";
         cData.underline = true;
       } else {
         canvas.getActiveObject().set("underline", false);
@@ -388,22 +466,19 @@ function selectedTextItemActivity(x) {
   if (cData.fontWeight == "normal") {
     document.querySelector(".btnBold").style.backgroundColor = "";
   } else {
-    document.querySelector(".btnBold").style.backgroundColor =
-      "var(--Orange500)";
+    document.querySelector(".btnBold").style.backgroundColor = "var(--Orange500)";
   }
 
   // Italic Or Not
   if (cData.fontStyle == "normal") {
     document.querySelector(".btnItalic").style.backgroundColor = "";
   } else {
-    document.querySelector(".btnItalic").style.backgroundColor =
-      "var(--Orange500)";
+    document.querySelector(".btnItalic").style.backgroundColor = "var(--Orange500)";
   }
 
   // Underline Or Not
   if (cData.underline == true) {
-    document.querySelector(".btnUnderline").style.backgroundColor =
-      "var(--Orange500)";
+    document.querySelector(".btnUnderline").style.backgroundColor = "var(--Orange500)";
   } else {
     document.querySelector(".btnUnderline").style.backgroundColor = "";
   }

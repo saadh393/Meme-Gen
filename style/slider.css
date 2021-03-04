@@ -199,50 +199,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 /* Font Color Chooser */
 
-/* Input Text Dialog Stylings */
-#dialog {
-  display: none;
-  width: 300px;
-  height: 150px;
-  background-color: #fff;
-  box-shadow: 0 0 10px 0 #232323be;
-  position: absolute;
-  top: 50%;
-  right: 40%;
-  text-align: center;
-  align-items: center;
-  border-radius: 5px;
-  padding: 1rem 1.2rem;
-}
-
-#dialog p {
-  color: var(--Blue800);
-}
-#dialog input {
-  width: 100%;
-  outline: none;
-  border: none;
-  border-bottom: 2px solid var(--Blue800);
-  padding: 0.5rem 0.2rem;
-  border-radius: 0;
-}
-
-.btnBottom {
-  width: 100%;
-  text-align-last: right;
-}
-
-#dialog a {
-  border: none;
-  padding: none;
-  shadow: none;
-  color: var(--Blue800);
-  box-shadow: 0 0 0px 0 salmon;
-}
-#dialog a:hover {
-  background-color: var(--Blue800);
-  color: #fff;
-}
+/* Input Text ido_main Stylings */
 
 /* Color Picker Slider  */
 #colorPickerSlider {
@@ -254,4 +211,86 @@ input[type="range"]::-webkit-slider-runnable-track {
   height: 35px;
   border-radius: 50%;
   margin-top: 3px;
+}
+
+/* 
+
+  Styling for The Text area
+  When User want to place any text
+  He have to click "Text=>Text" Menu
+  
+  ido       = Input Dialog Overlay
+  ido_main  = Main Container of Dialog Overlay
+  ido_text  = text area of Dialog
+  ido_close = close Button of the overlay
+
+*/
+/* ido_main Id Contains the Whole area for writing Text */
+#ido_main {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  background-color: #00000073;
+  box-shadow: 0 0 10px 0 #232323be;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  align-items: center;
+  border-radius: 5px;
+  /* padding: 1rem 1.2rem; */
+  grid-template-rows: 1fr 2fr 1fr;
+}
+
+.btnBottom {
+  width: 100%;
+  text-align-last: right;
+}
+
+#ido_main a {
+  border: none;
+  padding: none;
+  shadow: none;
+  color: var(--Blue800);
+  box-shadow: 0 0 0px 0 salmon;
+}
+#ido_main a:hover {
+  background-color: var(--Blue800);
+  color: #fff;
+}
+
+/* Formating Area => Top Bar Of The Editable Text Area  */
+
+#formatingArea {
+  background-color: #ffffffcf;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  height: 40px;
+  position: relative;
+  top: 0px;
+  align-self: baseline;
+}
+
+/* Formating Icons => Bold Italic Underline */
+#formatingArea img {
+  margin: 5px;
+  padding: 10px;
+}
+
+/* Input Text Area Under ido_main box */
+#ido_Text {
+  /* height: 100%; */
+  width: 90%;
+  outline: none;
+  border: none;
+  background-color: #ffffff00;
+  padding: 0.5rem 0.2rem;
+  border-radius: 0;
+  margin-left: 10px;
+  font-size: 20px;
+  text-align: center;
+  padding: 20px;
+  color: #fff;
 }

@@ -19,14 +19,56 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
   <body>
+    <!-- 
+        Abbreviations
+          1. Input Dialog Overlays = ido
+
+
+     -->
+
     <div class="container">
-      <div class="actionButtons flex">
+      <!---- Javascript Event hadling at line 55 on script.js -->
+      <!-- <div class="actionButtons flex">
         <a href="#" class="btn">Choose Template</a>
         <a href="#" class="btn" id="--addText">Add Text</a>
         <a href="#" class="btn">Add Image</a>
         <input type="file" class="btn" id="addImage" accept="image/*" />
-      </div>
+      </div> -->
       <canvas id="canvas" width="360px" height="640px"></canvas>
+      <div id="ido_main">
+        <div id="formatingArea">
+          <img src="./icons/right-2.png" id="ido_ok" width="40px" />
+          <div class="formatingBtns">
+            <img src="./icons/center.svg" id="formatingArea-center" />
+            <img src="./icons/bold-text.svg" id="formatingArea-bold" />
+            <img src="./icons/italic-text.svg" id="formatingArea-italic" />
+            <img src="./icons/underline-text.svg" id="formatingArea-underline" />
+          </div>
+          <img src="./icons/close.png" id="ido_close" width="40px" />
+        </div>
+        <textarea
+          id="ido_Text"
+          onkeyup="textAreaAdjust(this)"
+          style="overflow: hidden"
+          maxlength="250"
+          placeholder="Describe yourself here..."
+        ></textarea>
+        <script>
+          function textAreaAdjust(element) {
+            element.style.height = "1px";
+            element.style.height = 25 + element.scrollHeight + "px";
+          }
+        </script>
+        <!-- <input
+          type="text"
+          id="textFortext"
+          value="Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+        /> -->
+        <!-- <div class="btnBottom">
+          <a href="#" id="cancelText">Cancel</a>
+          <a href="#" id="btnForText">Ok</a>
+        </div> -->
+      </div>
     </div>
 
     <!-- Main Menu Silder -->
@@ -119,32 +161,14 @@
     <!-- Font Family -->
     <div class="slider popupContainer" id="fontFamily-properties">
       <div class="slider-container">
-        <p
-          class="slider-Item"
-          onclick="updateFont('Arial')"
-          style="font-family: Arial"
-        >
-          Arial
-        </p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Helvetica')"
-          style="font-family: Helvetica"
-        >
+        <p class="slider-Item" onclick="updateFont('Arial')" style="font-family: Arial">Arial</p>
+        <p class="slider-Item" onclick="updateFont('Helvetica')" style="font-family: Helvetica">
           Helvetica
         </p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Courier')"
-          style="font-family: Courier"
-        >
+        <p class="slider-Item" onclick="updateFont('Courier')" style="font-family: Courier">
           Courier
         </p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Neuzeit')"
-          style="font-family: Neuzeit"
-        >
+        <p class="slider-Item" onclick="updateFont('Neuzeit')" style="font-family: Neuzeit">
           Neuzeit
         </p>
         <p
@@ -161,20 +185,10 @@
         >
           Hello Stockholm
         </p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Mightype')"
-          style="font-family: Mightype"
-        >
+        <p class="slider-Item" onclick="updateFont('Mightype')" style="font-family: Mightype">
           Mightype
         </p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Selima')"
-          style="font-family: Selima"
-        >
-          Selima
-        </p>
+        <p class="slider-Item" onclick="updateFont('Selima')" style="font-family: Selima">Selima</p>
         <p
           class="slider-Item"
           onclick="updateFont('Sweet Sensations')"
@@ -182,27 +196,9 @@
         >
           Sweet Sensations
         </p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Bobbers')"
-          style="font-family: Bobbers"
-        >
+        <p class="slider-Item" onclick="updateFont('Bobbers')" style="font-family: Bobbers">
           Bobbers
         </p>
-      </div>
-    </div>
-
-    <!-- Hidden Popup Dialog Box -->
-    <div id="dialog">
-      <p align="left"><b>Text to Show</b></p>
-      <input
-        type="text"
-        id="textFortext"
-        value="Lorem ipsum dolor sit amet consectetur, adipisicing elit."
-      />
-      <div class="btnBottom">
-        <a href="#" id="cancelText">Cancel</a>
-        <a href="#" id="btnForText">Ok</a>
       </div>
     </div>
 
@@ -212,14 +208,7 @@
       <div class="vh"></div>
       <div class="field">
         <div class="value left">5</div>
-        <input
-          type="range"
-          min="5"
-          max="50"
-          id="fontSizeSlider"
-          value="15"
-          step="1"
-        />
+        <input type="range" min="5" max="50" id="fontSizeSlider" value="15" step="1" />
         <div class="value right">50</div>
       </div>
     </div>
@@ -239,34 +228,34 @@
           <div class="vh"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgRed1"></div>
+          <div class="colorBox bgRed1" onclick="updateColor('#ef5350')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgRed3"></div>
+          <div class="colorBox bgRed3" onclick="updateColor('#e53935')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgPurple1"></div>
+          <div class="colorBox bgPurple1" onclick="updateColor('#ec407a')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgPurple3"></div>
+          <div class="colorBox bgPurple3" onclick="updateColor('#ad1457')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgBlue1"></div>
+          <div class="colorBox bgBlue1" onclick="updateColor('#3f51b5')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgBlue3"></div>
+          <div class="colorBox bgBlue3" onclick="updateColor('#1565c0')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgGreen1"></div>
+          <div class="colorBox bgGreen1" onclick="updateColor('#4caf50')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgGreen3"></div>
+          <div class="colorBox bgGreen3" onclick="updateColor('#00796b')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgOrange1"></div>
+          <div class="colorBox bgOrange1" onclick="updateColor('#ffc107')"></div>
         </div>
         <div class="slider-Item">
-          <div class="colorBox bgOrange3"></div>
+          <div class="colorBox bgOrange3" onclick="updateColor('#ff5722')"></div>
         </div>
       </div>
     </div>
