@@ -177,7 +177,7 @@
 
     <!-- Font Size Range Slider -->
     <div class="popupContainer" id="fontSizeController">
-      <img src="./icons/Down Btn.svg" />
+      <img src="./icons/Down Btn.svg" onclick="removeInactiveDialogs()" />
       <div class="vh"></div>
       <div class="field">
         <div class="value left">Amount</div>
@@ -188,48 +188,12 @@
 
     <!-- Color Picker Slider -->
     <div class="slider" id="colorPickerSlider">
-      <div class="slider-container">
-        <div class="slider-Item">
-          <img src="./icons/Down Btn.svg" />
-        </div>
-        <div class="slider-Item">
-          <img src="./icons/picker.png" style="width: 25px; margin-top: 6px" />
-          <!-- <div class="alignItem">
-          </div> -->
-        </div>
-        <div class="slider-Item">
-          <div class="vh"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgRed1" onclick="updateColor('#ef5350')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgRed3" onclick="updateColor('#e53935')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgPurple1" onclick="updateColor('#ec407a')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgPurple3" onclick="updateColor('#ad1457')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgBlue1" onclick="updateColor('#3f51b5')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgBlue3" onclick="updateColor('#1565c0')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgGreen1" onclick="updateColor('#4caf50')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgGreen3" onclick="updateColor('#00796b')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgOrange1" onclick="updateColor('#ffc107')"></div>
-        </div>
-        <div class="slider-Item">
-          <div class="colorBox bgOrange3" onclick="updateColor('#ff5722')"></div>
-        </div>
+      <div class="slider-container" id="colorPickerContainer">
+        <!-- 
+            Using renderColorDom function to Render Colors Line : 566
+            Invoked in line 237
+          
+          -->
       </div>
     </div>
 

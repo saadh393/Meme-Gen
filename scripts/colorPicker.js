@@ -39,16 +39,16 @@ btnColorPicker.on("click", () => {
 //   });
 
 // inputColor is the Input Field for color Choosing
-//   $("#inputColor").on("input", (e) => {
-//     if (canvas.getActiveObject()) {
-//       if (currentSelection === 0) {
-//         return;
-//       }
-//       console.log(e.target.value);
-//       currentSelection.setColor(e.target.value);
-//       canvas.renderAll();
-//     }
-//   });
+$("#inputColor").on("input", (e) => {
+  if (canvas.getActiveObject()) {
+    if (currentSelection === 0) {
+      return;
+    }
+    console.log(e.target.value);
+    currentSelection.setColor(e.target.value);
+    canvas.renderAll();
+  }
+});
 
 //   $("#inputColor").on("change", (e) => {
 //     $("#colorPickerDialog").hide("slide", "up", 200, () => {
@@ -58,7 +58,7 @@ btnColorPicker.on("click", () => {
 
 //   cData.activeFontMenu.push("#colorPickerDialog");
 
-const updateColor = (colorCode) => {
+function updateColor(colorCode) {
   if (canvas.getActiveObject()) {
     if (currentSelection === 0) {
       return;
@@ -66,4 +66,4 @@ const updateColor = (colorCode) => {
     currentSelection.setColor(colorCode);
     canvas.renderAll();
   }
-};
+}

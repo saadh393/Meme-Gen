@@ -254,6 +254,20 @@ function defaultPropartyValues() {
   ido_Main.hide();
 
   renderFontsDom(); // Creating Font Name Lists
+  renderColorDom(updateColor);
+
+  // Temporary
+  text = new fabric.Textbox("Hello World", {
+    left: 100,
+    top: 100,
+  });
+  text.centeredScaling = true;
+  text.set("fontWeight", idoData.bold ? "bold" : "normal");
+  text.set("fontFamily", "Poppins");
+  canvas.add(text).renderAll();
+  fontsSubMenuVisibility();
+  ido_Main.hide();
+  ido_Text.value = "";
 }
 function init() {
   canvas = new fabric.Canvas("canvas");
@@ -523,7 +537,7 @@ function removeInactiveDialogs() {
   cData.activeFontMenu = [];
 }
 
-function renderFontsDom(font) {
+function renderFontsDom() {
   const fontList = [
     "Poppins",
     "Roboto",
@@ -547,4 +561,76 @@ function renderFontsDom(font) {
     p.innerText = fontName;
     fontNameContainer.appendChild(p);
   });
+}
+
+function renderColorDom(handleFunc) {
+  const rootDiv = document.getElementById("colorPickerContainer");
+
+  // Down Button
+  const downBtnDiv = document.createElement("div");
+  downBtnDiv.className = "slider-Item";
+
+  const image = document.createElement("img");
+  image.src = "./icons/Down Btn.svg";
+  image.onclick = removeInactiveDialogs;
+
+  downBtnDiv.appendChild(image);
+  rootDiv.appendChild(downBtnDiv);
+
+  // Color Picker
+  const colorPickerDiv = document.createElement("div");
+  colorPickerDiv.className = "slider-Item";
+
+  const inputColor = document.createElement("input");
+  inputColor.style.cssText = "width: 35px; height: 35px; margin-top: 6px";
+  inputColor.type = "color";
+  inputColor.id = "inputColor";
+
+  colorPickerDiv.appendChild(inputColor);
+  rootDiv.appendChild(colorPickerDiv);
+
+  // Vartical Line
+  const vhDivSliderItem = document.createElement("div");
+  const vhDiv = document.createElement("div");
+
+  vhDivSliderItem.className = "slider-Item";
+  vhDiv.className = "vh";
+
+  vhDivSliderItem.appendChild(vhDiv);
+  rootDiv.appendChild(vhDivSliderItem);
+
+  // Colors
+  const colors = [
+    "#ef5350",
+    "#e53935",
+    "#ec407a",
+    "#ad1457",
+    "#3f51b5",
+    "#1565c0",
+    "#4caf50",
+    "#00796b",
+    "#ffc107",
+    "#ff5722",
+  ];
+  colors.forEach((color) => {
+    const sliderItem = document.createElement("div");
+    sliderItem.className = "slider-Item";
+
+    const colorBox = document.createElement("div");
+    colorBox.className = "colorBox";
+    colorBox.style.backgroundColor = color;
+    colorBox.onclick = () => handleFunc(color);
+
+    sliderItem.appendChild(colorBox);
+    rootDiv.appendChild(sliderItem);
+  });
+}
+function updateColor(colorCode) {
+  if (canvas.getActiveObject()) {
+    if (currentSelection === 0) {
+      return;
+    }
+    currentSelection.setColor(colorCode);
+    canvas.renderAll();
+  }
 }
