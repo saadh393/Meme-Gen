@@ -23,12 +23,14 @@ mainMenuEvents();
 // Event : When Any Object is Selected
 canvas.on("object:selected", (e) => {
   cData.selectionType = e.target.type;
+  // console.log(e.target.type);
 
   if (e.target.type === "textbox") {
     cData.fontStyle = canvas.getActiveObject().fontStyle;
     cData.fontWeight = canvas.getActiveObject().fontWeight;
     cData.underline = canvas.getActiveObject().underline;
     cData.alignment = canvas.getActiveObject().textAlign;
+    cData.fontSize = canvas.getActiveObject().fontSize;
 
     currentSelection = e.target;
     ido_Text.value = e.target.text;
@@ -41,11 +43,15 @@ canvas.on("selection:cleared", (e) => {
   console.log("selection:cleared");
   cData.selectionType = undefined;
   cData.alignment = undefined;
+
   // Add Text Customizations
   fontsSubMenuVisibility();
   ido_Text.value = "";
   fontSliderProperties.hide(); // style.display = 'none'
   fontFamilyProperties.hide();
+  fontSizeController.hide();
+  removeInactiveDialogs();
+  $("#colorPickerSlider").hide();
   currentSelection = 0;
   // $(".textAlign").remove();
 });
@@ -91,29 +97,43 @@ canvas.setBackgroundImage(template.src, canvas.renderAll.bind(canvas), {
 
 // Add Text
 btnAddText.addEventListener("click", (e) => {
-  ido_Main.show();
+  console.log("clicked");
   removeInactiveDialogs();
-  cData.activeFontMenu.push("#dialog"); //> ido_main
+  $("#ido_main").show();
+  cData.activeFontMenu.push("#ido_main"); //> ido_main
 
   ido_ok.addEventListener("click", (e) => {
-    if (currentSelection == 0) {
-      // Creating New
-      text = new fabric.Textbox(ido_Text.value, {
-        left: 100,
-        top: 100,
-      });
-      text.fontFamily = "cursive";
-      text.centeredScaling = true;
-      canvas.add(text).renderAll();
-      fontsSubMenuVisibility();
-    } else {
-      // Editing Existing
-      currentSelection.text = ido_Text.value;
-      canvas.add(currentSelection).renderAll();
-      currentSelection = 0;
-    }
+    // if (!textBox) {
+    //   // Creating New
+    //   text = new fabric.Textbox(ido_Text.value, {
+    //     left: 100,
+    //     top: 100,
+    //   });
+    //   text.centeredScaling = true;
+    //   text.set("fontWeight", idoData.bold ? "bold" : "normal");
+    //   text.set("fontFamily", "Poppins");
+    //   canvas.add(text).renderAll();
+    //   fontsSubMenuVisibility();
+    // } else {
+    //   // Editing Existing
+    //   currentSelection.text = ido_Text.value;
+    //   canvas.add(currentSelection).renderAll();
+    //   // canvas.getActiveObject().set("text", ido_Text.value);
+    //   // canvas.requestRenderAll();
+    //   currentSelection = 0;
+    // }
+
+    // Creating New
+    text = new fabric.Textbox(ido_Text.value, {
+      left: 100,
+      top: 100,
+    });
+    text.centeredScaling = true;
+    text.set("fontWeight", idoData.bold ? "bold" : "normal");
+    text.set("fontFamily", "Poppins");
+    canvas.add(text).renderAll();
+    fontsSubMenuVisibility();
     ido_Main.hide();
-    // ido_Main.style.display = "none";
     ido_Text.value = "";
   });
 
@@ -194,8 +214,7 @@ function fontPropertiesEvents() {
   // Change Font Family
   chnageFont.on("click", () => {
     if (currentSelection == 0) return;
-    fontFamilyProperties.fadeToggle(100, "linear");
-    console.log(fontFamilyProperties.attr("class"));
+    fontFamilyProperties.show();
     removeInactiveDialogs();
     cData.activeFontMenu.push("#fontFamily-properties");
   });
@@ -203,8 +222,10 @@ function fontPropertiesEvents() {
   // Change Font Size
   $("#chnageSize").on("click", () => {
     if (currentSelection == 0) return;
+    fontSizeController.show();
+    $("#fontSizeSlider")[0].value = cData.fontSize;
+    $("#fontSizeVal")[0].innerText = cData.fontSize;
     updateFontSize();
-    fontSizeController.fadeToggle(100, "linear");
     removeInactiveDialogs();
     cData.activeFontMenu.push("#fontSizeController");
   });
@@ -212,6 +233,7 @@ function fontPropertiesEvents() {
 
 function defaultPropartyValues() {
   currentSelection = 0;
+  textBox = false;
 
   // Hide Popups
   fontSliderProperties.hide();
@@ -230,8 +252,9 @@ function defaultPropartyValues() {
 
   // Input Dialog Overlay - ido
   ido_Main.hide();
-}
 
+  renderFontsDom(); // Creating Font Name Lists
+}
 function init() {
   canvas = new fabric.Canvas("canvas");
   canvas.selection = false; // Disable Drag Selection
@@ -338,6 +361,7 @@ function removeBtn() {
         $(".btnUnderline").remove();
       });
     }
+    cData.selectionType == "textbox" ? (textBox = true) : (textBox = false);
     if (!canvas.getActiveObject()) {
       $(".deleteBtn").remove();
     }
@@ -365,6 +389,8 @@ function removeBtn() {
 
   // Delete Button CLick Event
   $(document).on("click", ".deleteBtn", () => {
+    console.log(canvas.getActiveObject());
+
     if (canvas.getActiveObject()) {
       canvas.remove(canvas.getActiveObject());
       $(".deleteBtn").remove();
@@ -444,20 +470,21 @@ function fontsSubMenuVisibility() {
 }
 
 function updateFont(fontName) {
-  if (selectionType == 0) return;
-  currentSelection.fontFamily = fontName;
-  canvas.add(currentSelection).renderAll();
-  fontFamilyProperties.fadeOut();
+  // console.log(selectionType);
+  if (cData.selectionType == 0) return;
+  canvas.getActiveObject().set("fontFamily", fontName);
+  canvas.requestRenderAll();
 }
 
 function updateFontSize() {
   inputSlider.oninput = () => {
     if (currentSelection == 0) return;
     const val = inputSlider.value;
-    slideValue.textContent = val;
-
-    currentSelection.fontSize = val;
-    canvas.add(currentSelection).renderAll();
+    $("#fontSizeVal")[0].innerText = val;
+    canvas.getActiveObject().set("fontSize", val);
+    canvas.requestRenderAll();
+    // currentSelection.fontSize = val;
+    // canvas.add(currentSelection).renderAll();
   };
 }
 
@@ -487,11 +514,37 @@ function selectedTextItemActivity(x) {
 function removeInactiveDialogs() {
   cData.activeFontMenu.forEach((item) => {
     if ($(item).is(":visible")) {
-      $(item).fadeToggle(100, "linear");
+      $(item).hide();
     }
     if (item == "#colorPickerDialog") {
       $("#colorPickerDialog").remove();
     }
   });
   cData.activeFontMenu = [];
+}
+
+function renderFontsDom(font) {
+  const fontList = [
+    "Poppins",
+    "Roboto",
+    "Oswald",
+    "Arial",
+    "Lobster",
+    "Pacifico",
+    "Satisfy",
+    "Bangers",
+    "Audiowide",
+    "Sacramento",
+  ];
+
+  fontList.forEach((fontName) => {
+    let p = document.createElement("p");
+    let fontNameContainer = document.getElementById("fontNameContainer");
+    p.className = "slider-Item";
+    p.onclick = () => updateFont(fontName);
+
+    p.style.fontFamily = fontName;
+    p.innerText = fontName;
+    fontNameContainer.appendChild(p);
+  });
 }

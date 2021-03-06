@@ -15,6 +15,12 @@
       integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins|Roboto|Oswald|Arial|Lobster|Pacifico|Satisfy|Bangers|Audiowide|Sacramento"
+      rel="stylesheet"
+      type="text/css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
@@ -37,14 +43,14 @@
       <canvas id="canvas" width="360px" height="640px"></canvas>
       <div id="ido_main">
         <div id="formatingArea">
-          <img src="./icons/right-2.png" id="ido_ok" width="40px" />
+          <img src="./icons/close.png" id="ido_close" width="40px" />
           <div class="formatingBtns">
             <img src="./icons/center.svg" id="formatingArea-center" />
             <img src="./icons/bold-text.svg" id="formatingArea-bold" />
             <img src="./icons/italic-text.svg" id="formatingArea-italic" />
             <img src="./icons/underline-text.svg" id="formatingArea-underline" />
           </div>
-          <img src="./icons/close.png" id="ido_close" width="40px" />
+          <img src="./icons/right-2.png" id="ido_ok" width="40px" />
         </div>
         <textarea
           id="ido_Text"
@@ -160,45 +166,12 @@
 
     <!-- Font Family -->
     <div class="slider popupContainer" id="fontFamily-properties">
-      <div class="slider-container">
-        <p class="slider-Item" onclick="updateFont('Arial')" style="font-family: Arial">Arial</p>
-        <p class="slider-Item" onclick="updateFont('Helvetica')" style="font-family: Helvetica">
-          Helvetica
-        </p>
-        <p class="slider-Item" onclick="updateFont('Courier')" style="font-family: Courier">
-          Courier
-        </p>
-        <p class="slider-Item" onclick="updateFont('Neuzeit')" style="font-family: Neuzeit">
-          Neuzeit
-        </p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Proxima Sans')"
-          style="font-family: Proxima Sans"
-        >
-          Proxima Sans
-        </p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Hello Stockholm')"
-          style="font-family: Hello Stockholm"
-        >
-          Hello Stockholm
-        </p>
-        <p class="slider-Item" onclick="updateFont('Mightype')" style="font-family: Mightype">
-          Mightype
-        </p>
-        <p class="slider-Item" onclick="updateFont('Selima')" style="font-family: Selima">Selima</p>
-        <p
-          class="slider-Item"
-          onclick="updateFont('Sweet Sensations')"
-          style="font-family: Sweet Sensations"
-        >
-          Sweet Sensations
-        </p>
-        <p class="slider-Item" onclick="updateFont('Bobbers')" style="font-family: Bobbers">
-          Bobbers
-        </p>
+      <div class="slider-container" id="fontNameContainer">
+        <!-- 
+            Using renderFontsDom function to Render Font Names Line : 504
+            Invoked at line 236
+          
+          -->
       </div>
     </div>
 
@@ -207,9 +180,9 @@
       <img src="./icons/Down Btn.svg" />
       <div class="vh"></div>
       <div class="field">
-        <div class="value left">5</div>
-        <input type="range" min="5" max="50" id="fontSizeSlider" value="15" step="1" />
-        <div class="value right">50</div>
+        <div class="value left">Amount</div>
+        <input type="range" min="5" max="100" id="fontSizeSlider" value="15" step="1" />
+        <div class="value right" id="fontSizeVal">100</div>
       </div>
     </div>
 
