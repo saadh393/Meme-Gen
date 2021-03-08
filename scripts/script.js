@@ -32,6 +32,10 @@ canvas.on("object:selected", (e) => {
     cData.alignment = canvas.getActiveObject().textAlign;
     cData.fontSize = canvas.getActiveObject().fontSize;
 
+    if (canvas.getActiveObject().shadow)
+      cData.shadowBlur = canvas.getActiveObject().shadow.blur || 0;
+    // cData.shadowColor = canvas.getActiveObject().ctx.shadowColor;
+
     currentSelection = e.target;
     ido_Text.value = e.target.text;
     fontSliderProperties.show();
@@ -43,17 +47,20 @@ canvas.on("selection:cleared", (e) => {
   console.log("selection:cleared");
   cData.selectionType = undefined;
   cData.alignment = undefined;
+  cData.shadowBlur = 0;
 
   // Add Text Customizations
-  fontsSubMenuVisibility();
+  // fontsSubMenuVisibility();
+  // fontSliderProperties.hide(); // style.display = 'none'
+  // $("#colorPickerSlider").hide();
+  // $(".textAlign").remove();
+
   ido_Text.value = "";
-  fontSliderProperties.hide(); // style.display = 'none'
   fontFamilyProperties.hide();
   fontSizeController.hide();
   removeInactiveDialogs();
-  $("#colorPickerSlider").hide();
   currentSelection = 0;
-  // $(".textAlign").remove();
+  cData.colorPickerVisible = false;
 });
 
 removeBtn(); // for Remove Icon
@@ -229,6 +236,81 @@ function fontPropertiesEvents() {
     removeInactiveDialogs();
     cData.activeFontMenu.push("#fontSizeController");
   });
+
+  const adjustDiv = $("#adjustment");
+  const positionDiv = $("#position");
+  const colorDiv = $("#color");
+  positionDiv.hide();
+  colorDiv.hide();
+  // Shadow Menu Selection
+  $("#btnAdjust").on("click", () => {
+    positionDiv.hide();
+    colorDiv.hide();
+    adjustDiv.show();
+  });
+
+  $("#btnPosition").on("click", () => {
+    colorDiv.hide();
+    adjustDiv.hide();
+    positionDiv.show();
+  });
+
+  $("#btnColor").on("click", () => {
+    positionDiv.hide();
+    adjustDiv.hide();
+    colorDiv.show();
+  });
+
+  // Change Shadow
+  $("#chnageShadow").on("click", () => {
+    if (currentSelection == 0) return;
+    removeInactiveDialogs();
+    cData.activeFontMenu.push("#shadowSlider");
+    shadowSlider.show();
+
+    // Blur
+    blurInputValue[0].value = cData.shadowBlur || 0;
+    blurInputValue.on("input", (e) => {
+      cData.shadowBlur = e.target.value;
+      canvas.getActiveObject().set({
+        shadow: {
+          offsetX: cData.shadowOffsetX,
+          offsetY: cData.shadowOffsetY,
+          blur: cData.shadowBlur,
+          color: cData.shadowColor || "rgb(0, 0, 0)",
+        },
+      });
+      canvas.renderAll();
+    });
+  });
+
+  // Horizental or offsetX
+  $("#horizentalInputValue").on("input", (e) => {
+    cData.shadowOffsetX = e.target.value;
+    canvas.getActiveObject().set({
+      shadow: {
+        offsetX: cData.shadowOffsetX,
+        offsetY: cData.shadowOffsetY,
+        blur: cData.shadowBlur,
+        color: cData.shadowColor,
+      },
+    });
+    canvas.renderAll();
+  });
+
+  // Vertical or offsetX
+  $("#verticalInputValue").on("input", (e) => {
+    cData.shadowOffsetY = e.target.value;
+    canvas.getActiveObject().set({
+      shadow: {
+        offsetX: cData.shadowOffsetX,
+        offsetY: cData.shadowOffsetY,
+        blur: cData.shadowBlur,
+        color: cData.shadowColor,
+      },
+    });
+    canvas.renderAll();
+  });
 }
 
 function defaultPropartyValues() {
@@ -239,6 +321,8 @@ function defaultPropartyValues() {
   fontSliderProperties.hide();
   fontFamilyProperties.hide();
   fontSizeController.hide();
+  shadowSlider.hide();
+  ido_Main.hide();
 
   fabric.Object.prototype.set({
     transparentCorners: false,
@@ -246,15 +330,13 @@ function defaultPropartyValues() {
     cornerColor: "#333",
   });
 
-  // Font Size Controller
-  //   slideValue.style.left = "45%";
-  //   slideValue.textContent = inputSlider.value;
-
-  // Input Dialog Overlay - ido
-  ido_Main.hide();
-
+  // Rendering
   renderFontsDom(); // Creating Font Name Lists
-  renderColorDom(updateColor);
+  renderColorDom("colorPickerContainer", "inputColor", updateColor);
+  renderColorDom("shadowColorRender", "shadowColorPicker", updateShadowColor);
+
+  // Positioning
+  shadowSlider[0].style.bottom = mainSlider.offsetHeight * 2 - 1 + "px";
 
   // Temporary
   text = new fabric.Textbox("Hello World", {
@@ -269,6 +351,7 @@ function defaultPropartyValues() {
   ido_Main.hide();
   ido_Text.value = "";
 }
+
 function init() {
   canvas = new fabric.Canvas("canvas");
   canvas.selection = false; // Disable Drag Selection
@@ -294,6 +377,12 @@ function init() {
 
   // IDO Data holder for Text and AlignMents
   idoData = {};
+
+  // Text Shadow
+  shadowSlider = $("#shadowSlider");
+  shadowSliderContainer = $("#shadowSliderContainer");
+  document.getElementById("shadowSlider").style.height = "100px";
+  blurInputValue = $("#blurInputValue");
 }
 
 function removeBtn() {
@@ -379,6 +468,8 @@ function removeBtn() {
     if (!canvas.getActiveObject()) {
       $(".deleteBtn").remove();
     }
+
+    console.log(canvas.getActiveObject());
   });
 
   canvas.on("object:modified", (e) => {
@@ -526,15 +617,19 @@ function selectedTextItemActivity(x) {
 }
 
 function removeInactiveDialogs() {
-  cData.activeFontMenu.forEach((item) => {
-    if ($(item).is(":visible")) {
-      $(item).hide();
-    }
-    if (item == "#colorPickerDialog") {
-      $("#colorPickerDialog").remove();
-    }
-  });
-  cData.activeFontMenu = [];
+  if (cData.colorPickerVisible) {
+    // Checking Default Input Color Is Visible or Not
+    cData.colorPickerVisible = false;
+    return;
+  } else {
+    cData.activeFontMenu.forEach((item) => {
+      console.log("Color Picker Visible ", cData.colorPickerVisible);
+      if ($(item).is(":visible")) {
+        $(item).hide();
+      }
+    });
+    cData.activeFontMenu = [];
+  }
 }
 
 function renderFontsDom() {
@@ -563,8 +658,8 @@ function renderFontsDom() {
   });
 }
 
-function renderColorDom(handleFunc) {
-  const rootDiv = document.getElementById("colorPickerContainer");
+function renderColorDom(id, colorField, handleFunc) {
+  const rootDiv = document.getElementById(id);
 
   // Down Button
   const downBtnDiv = document.createElement("div");
@@ -577,17 +672,17 @@ function renderColorDom(handleFunc) {
   downBtnDiv.appendChild(image);
   rootDiv.appendChild(downBtnDiv);
 
-  // Color Picker
-  const colorPickerDiv = document.createElement("div");
-  colorPickerDiv.className = "slider-Item";
+  // // Color Picker
+  // const colorPickerDiv = document.createElement("div");
+  // colorPickerDiv.className = "slider-Item";
 
-  const inputColor = document.createElement("input");
-  inputColor.style.cssText = "width: 35px; height: 35px; margin-top: 6px";
-  inputColor.type = "color";
-  inputColor.id = "inputColor";
+  // const inputColor = document.createElement("input");
+  // inputColor.style.cssText = "width: 35px; height: 35px; margin-top: 6px";
+  // inputColor.type = "color";
+  // inputColor.id = colorField;
 
-  colorPickerDiv.appendChild(inputColor);
-  rootDiv.appendChild(colorPickerDiv);
+  // colorPickerDiv.appendChild(inputColor);
+  // rootDiv.appendChild(colorPickerDiv);
 
   // Vartical Line
   const vhDivSliderItem = document.createElement("div");
@@ -625,12 +720,31 @@ function renderColorDom(handleFunc) {
     rootDiv.appendChild(sliderItem);
   });
 }
+
 function updateColor(colorCode) {
   if (canvas.getActiveObject()) {
     if (currentSelection === 0) {
       return;
     }
     currentSelection.setColor(colorCode);
+    canvas.renderAll();
+  }
+}
+
+function updateShadowColor(colorCode) {
+  if (canvas.getActiveObject()) {
+    if (currentSelection === 0) {
+      return;
+    }
+    cData.shadowColor = colorCode;
+    canvas.getActiveObject().set({
+      shadow: {
+        offsetX: cData.shadowOffsetX,
+        offsetY: cData.shadowOffsetY,
+        blur: cData.shadowBlur,
+        color: cData.shadowColor,
+      },
+    });
     canvas.renderAll();
   }
 }

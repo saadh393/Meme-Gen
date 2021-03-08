@@ -237,3 +237,11 @@ input[type="color"]::-webkit-color-swatch {
   background-color: #716969;
   margin: 3px 6px;
 }
+
+/* Utils */
+.directionCol {
+  flex-direction: column;
+}
+.displayNone {
+  display: none;
+}

@@ -197,6 +197,39 @@
       </div>
     </div>
 
+    <!-- Shadow Slider -->
+    <div class="popupContainer directionCol" id="shadowSlider">
+      <div id="adjustment">
+        <div class="inputRange" id="blurDiv">
+          <div class="value left">Blur</div>
+          <input type="range" min="0" max="50" step=".5" value="0" id="blurInputValue" />
+          <div class="value right">100</div>
+        </div>
+      </div>
+
+      <div id="position">
+        <div class="inputRange" id="horizentalDiv">
+          <div class="value left">Horizental</div>
+          <input type="range" min="0" max="50" step=".5" value="0" id="horizentalInputValue" />
+          <div class="value right">100</div>
+        </div>
+        <div class="inputRange" id="verticalDiv">
+          <div class="value left">Vertical</div>
+          <input type="range" min="0" max="50" step=".5" value="0" id="verticalInputValue" />
+          <div class="value right">100</div>
+        </div>
+      </div>
+      <div class="slider" style="bottom: auto" id="color">
+        <div class="slider-container" id="shadowColorRender"></div>
+      </div>
+
+      <div class="bottomMenu">
+        <li id="btnAdjust">Adjust</li>
+        <li id="btnPosition">Position</li>
+        <li id="btnColor">Color</li>
+      </div>
+    </div>
+
     <script src="./scripts/script.js"></script>
     <!-- <script src="./scripts/picker.js"></script> -->
     <script src="./scripts/colorPicker.js"></script>

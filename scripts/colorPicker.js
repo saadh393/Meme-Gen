@@ -1,4 +1,4 @@
-const btnColorPicker = $("#chnageColor");
+const btnColorPicker = $("#chnageColor"); // Menu Item Color
 const colorPickerSlider = $("#colorPickerSlider");
 colorPickerSlider.hide();
 
@@ -47,16 +47,17 @@ $("#inputColor").on("input", (e) => {
     console.log(e.target.value);
     currentSelection.setColor(e.target.value);
     canvas.renderAll();
+    cData.colorPickerVisible = true;
   }
 });
 
-//   $("#inputColor").on("change", (e) => {
-//     $("#colorPickerDialog").hide("slide", "up", 200, () => {
-//       $("#colorPickerDialog").remove();
-//     });
+// $("#inputColor").on("change", (e) => {
+//   $("#colorPickerDialog").hide("slide", "up", 200, () => {
+//     $("#colorPickerDialog").remove();
 //   });
+// });
 
-//   cData.activeFontMenu.push("#colorPickerDialog");
+cData.activeFontMenu.push("#colorPickerDialog");
 
 function updateColor(colorCode) {
   if (canvas.getActiveObject()) {
