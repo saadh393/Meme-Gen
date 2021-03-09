@@ -11,7 +11,7 @@
   height: 58px;
   overflow-x: scroll;
   background-color: #333333;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
 }

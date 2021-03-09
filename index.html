@@ -156,7 +156,7 @@
         </div>
 
         <div class="slider-Item">
-          <div class="alignItem" id="chnageFont">
+          <div class="alignItem" id="fontStroke">
             <img src="./icons/text-menu/stroke.png" />
             <p>Stroke</p>
           </div>
@@ -227,6 +227,22 @@
         <li id="btnAdjust">Adjust</li>
         <li id="btnPosition">Position</li>
         <li id="btnColor">Color</li>
+      </div>
+    </div>
+
+    <!-- Text Stroke Menu -->
+    <div
+      class="popupContainer directionCol"
+      id="strokeRootDiv"
+      style="height: 100px; display: flex; bottom: 115px"
+    >
+      <div class="inputRange">
+        <div class="value left">Stroke Width</div>
+        <input type="range" min="0" max="10" step="1" value="0" id="strokeWidthValue" />
+        <div class="value right">100</div>
+      </div>
+      <div class="slider" style="bottom: auto; position: relative">
+        <div class="slider-container" id="strokeColorRender"></div>
       </div>
     </div>
 

@@ -32,9 +32,26 @@ canvas.on("object:selected", (e) => {
     cData.alignment = canvas.getActiveObject().textAlign;
     cData.fontSize = canvas.getActiveObject().fontSize;
 
-    if (canvas.getActiveObject().shadow)
+    if (canvas.getActiveObject().shadow) {
       cData.shadowBlur = canvas.getActiveObject().shadow.blur || 0;
-    // cData.shadowColor = canvas.getActiveObject().ctx.shadowColor;
+      // test
+    } else {
+      const shadow = {
+        color: "rgb(0,0,0)",
+        blur: 0,
+        offsetX: 0,
+        offsetY: 0,
+      };
+      cData.shadow = shadow;
+    }
+
+    if (!cData.stroke) {
+      cData.stroke = {
+        strokeWidth: canvas.getActiveObject().strokeWidth || 0,
+        stroke: canvas.getActiveObject().stroke || "rgb(0,0,0)",
+        strokeLineCap: "butt",
+      };
+    }
 
     currentSelection = e.target;
     ido_Text.value = e.target.text;
@@ -271,14 +288,9 @@ function fontPropertiesEvents() {
     // Blur
     blurInputValue[0].value = cData.shadowBlur || 0;
     blurInputValue.on("input", (e) => {
-      cData.shadowBlur = e.target.value;
+      cData.shadow.blur = e.target.value;
       canvas.getActiveObject().set({
-        shadow: {
-          offsetX: cData.shadowOffsetX,
-          offsetY: cData.shadowOffsetY,
-          blur: cData.shadowBlur,
-          color: cData.shadowColor || "rgb(0, 0, 0)",
-        },
+        shadow: cData.shadow,
       });
       canvas.renderAll();
     });
@@ -286,29 +298,41 @@ function fontPropertiesEvents() {
 
   // Horizental or offsetX
   $("#horizentalInputValue").on("input", (e) => {
-    cData.shadowOffsetX = e.target.value;
+    cData.shadow.offsetX = e.target.value;
     canvas.getActiveObject().set({
-      shadow: {
-        offsetX: cData.shadowOffsetX,
-        offsetY: cData.shadowOffsetY,
-        blur: cData.shadowBlur,
-        color: cData.shadowColor,
-      },
+      shadow: cData.shadow,
     });
     canvas.renderAll();
   });
 
   // Vertical or offsetX
   $("#verticalInputValue").on("input", (e) => {
-    cData.shadowOffsetY = e.target.value;
+    cData.shadow.offsetY = e.target.value;
     canvas.getActiveObject().set({
-      shadow: {
-        offsetX: cData.shadowOffsetX,
-        offsetY: cData.shadowOffsetY,
-        blur: cData.shadowBlur,
-        color: cData.shadowColor,
-      },
+      shadow: cData.shadow,
     });
+    canvas.renderAll();
+  });
+
+  // Color Picker
+  $("#shadowColorPicker").on("input", (e) => {
+    cData.shadow.color = e.target.value;
+    canvas.getActiveObject().set({
+      shadow: cData.shadow,
+    });
+    canvas.renderAll();
+  });
+
+  // Stroke Menu Handler
+  $("#fontStroke").on("click", () => {
+    if (currentSelection == 0) return;
+    strokeRootDiv.show();
+    removeInactiveDialogs();
+    cData.activeFontMenu.push("#strokeRootDiv");
+  });
+  $("#strokeWidthValue").on("input", (e) => {
+    cData.stroke.strokeWidth = e.target.value;
+    canvas.getActiveObject().set(cData.stroke);
     canvas.renderAll();
   });
 }
@@ -321,6 +345,7 @@ function defaultPropartyValues() {
   fontSliderProperties.hide();
   fontFamilyProperties.hide();
   fontSizeController.hide();
+  strokeRootDiv.hide();
   shadowSlider.hide();
   ido_Main.hide();
 
@@ -334,6 +359,7 @@ function defaultPropartyValues() {
   renderFontsDom(); // Creating Font Name Lists
   renderColorDom("colorPickerContainer", "inputColor", updateColor);
   renderColorDom("shadowColorRender", "shadowColorPicker", updateShadowColor);
+  renderColorDom("strokeColorRender", "shadowColorPicker", updateStrokeColor);
 
   // Positioning
   shadowSlider[0].style.bottom = mainSlider.offsetHeight * 2 - 1 + "px";
@@ -342,6 +368,7 @@ function defaultPropartyValues() {
   text = new fabric.Textbox("Hello World", {
     left: 100,
     top: 100,
+    dirty: true,
   });
   text.centeredScaling = true;
   text.set("fontWeight", idoData.bold ? "bold" : "normal");
@@ -383,6 +410,9 @@ function init() {
   shadowSliderContainer = $("#shadowSliderContainer");
   document.getElementById("shadowSlider").style.height = "100px";
   blurInputValue = $("#blurInputValue");
+
+  // Text Stroke
+  strokeRootDiv = $("#strokeRootDiv");
 }
 
 function removeBtn() {
@@ -440,10 +470,10 @@ function removeBtn() {
     addDeleteBtn(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
 
     if (cData.selectionType == "textbox") {
-      btnBold(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
-      textAlign(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
-      btnItalic(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
-      btnUnderline(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
+      // btnBold(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
+      // textAlign(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
+      // btnItalic(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
+      // btnUnderline(canvas.vptCoords.tr.x, canvas.vptCoords.tr.y);
       selectedTextItemActivity("object:selected");
     }
   });
@@ -594,6 +624,7 @@ function updateFontSize() {
 }
 
 function selectedTextItemActivity(x) {
+  return;
   // Bold or Not
   if (cData.fontWeight == "normal") {
     document.querySelector(".btnBold").style.backgroundColor = "";
@@ -672,17 +703,17 @@ function renderColorDom(id, colorField, handleFunc) {
   downBtnDiv.appendChild(image);
   rootDiv.appendChild(downBtnDiv);
 
-  // // Color Picker
-  // const colorPickerDiv = document.createElement("div");
-  // colorPickerDiv.className = "slider-Item";
+  // Color Picker
+  const colorPickerDiv = document.createElement("div");
+  colorPickerDiv.className = "slider-Item";
 
-  // const inputColor = document.createElement("input");
-  // inputColor.style.cssText = "width: 35px; height: 35px; margin-top: 6px";
-  // inputColor.type = "color";
-  // inputColor.id = colorField;
+  const inputColor = document.createElement("input");
+  inputColor.style.cssText = "width: 35px; height: 35px; margin-top: 6px";
+  inputColor.type = "color";
+  inputColor.id = colorField;
 
-  // colorPickerDiv.appendChild(inputColor);
-  // rootDiv.appendChild(colorPickerDiv);
+  colorPickerDiv.appendChild(inputColor);
+  rootDiv.appendChild(colorPickerDiv);
 
   // Vartical Line
   const vhDivSliderItem = document.createElement("div");
@@ -736,15 +767,21 @@ function updateShadowColor(colorCode) {
     if (currentSelection === 0) {
       return;
     }
-    cData.shadowColor = colorCode;
+    cData.shadow.color = colorCode;
     canvas.getActiveObject().set({
-      shadow: {
-        offsetX: cData.shadowOffsetX,
-        offsetY: cData.shadowOffsetY,
-        blur: cData.shadowBlur,
-        color: cData.shadowColor,
-      },
+      shadow: cData.shadow,
     });
     canvas.renderAll();
+  }
+}
+
+function updateStrokeColor(colorCode) {
+  if (canvas.getActiveObject()) {
+    if (currentSelection === 0) {
+      return;
+    }
+    cData.stroke.stroke = colorCode;
+    canvas.getActiveObject().set(cData.stroke);
+    canvas.requestRenderAll();
   }
 }
