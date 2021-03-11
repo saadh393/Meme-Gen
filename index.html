@@ -2,11 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
+    />
     <title>Meme Gen</title>
     <link rel="stylesheet" href="./style/style.css" />
     <link rel="stylesheet" href="./style/slider.css" />
     <link rel="stylesheet" href="./style/picker.css" />
+    <link rel="stylesheet" href="./style/template.css" />
+    <script src="./scripts/hammer.js"></script>
     <script src="./scripts/fabric.js"></script>
 
     <link
@@ -33,13 +38,7 @@
      -->
 
     <div class="container">
-      <!---- Javascript Event hadling at line 55 on script.js -->
-      <!-- <div class="actionButtons flex">
-        <a href="#" class="btn">Choose Template</a>
-        <a href="#" class="btn" id="--addText">Add Text</a>
-        <a href="#" class="btn">Add Image</a>
-        <input type="file" class="btn" id="addImage" accept="image/*" />
-      </div> -->
+      <!-- <h4 id="log">Hello</h4> -->
       <canvas id="canvas" width="360px" height="640px"></canvas>
       <div id="ido_main">
         <div id="formatingArea">
@@ -95,10 +94,14 @@
         </div>
 
         <div class="slider-Item">
-          <div class="alignItem">
+          <input type="file" id="imgLoader" />
+          <div class="alignItem fileUploaderMenu">
             <img src="./icons/main-menu/image.png" />
             <p>Image</p>
           </div>
+          <!-- <label for="imgLoader">Image </label> -->
+          <!-- <div class="alignItem">
+          </div> -->
         </div>
 
         <div class="slider-Item">
@@ -246,17 +249,30 @@
       </div>
     </div>
 
+    <!-- Template Chooser -->
+    <div id="templateChooserRoot">
+      <div class="templates" id="templateList">
+        <img src="./templates/template1.jpg" alt="" />
+        <img src="./templates/template2.jpg" alt="" />
+        <img src="./templates/template3.jpg" alt="" />
+        <img src="./templates/template4.jpg" alt="" />
+        <img src="./templates/template1.jpg" alt="" />
+        <img src="./templates/template2.jpg" alt="" />
+        <img src="./templates/template3.jpg" alt="" />
+        <img src="./templates/template4.jpg" alt="" />
+      </div>
+    </div>
+
     <script src="./scripts/script.js"></script>
+    <script src="./scripts/image.js"></script>
+    <script src="./scripts/canvasArea.js"></script>
     <!-- <script src="./scripts/picker.js"></script> -->
     <script src="./scripts/colorPicker.js"></script>
+    <script src="./scripts/template.js"></script>
     <script>
       $(function () {
         $("#dialog").draggable();
       });
-
-      // Visible Color Picker on Click "Color" btn from Font Properties Sub Menu
-      // let colorPickerMenu = document.getElementById("chnageColor");
-      // let picker = new ColorPicker(colorPickerMenu);
     </script>
   </body>
 </html>

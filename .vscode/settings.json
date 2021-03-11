@@ -1,3 +1,4 @@
 {
-    "terminal.explorerKind": "external"
+    "terminal.explorerKind": "external",
+    "liveServer.settings.port": 5522
 }

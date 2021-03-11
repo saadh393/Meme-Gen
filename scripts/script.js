@@ -220,7 +220,6 @@ btnAddText.addEventListener("click", (e) => {
     idoData.align = aligns[i];
     ido_Text.style.textAlign = aligns[i];
     ido_formateCenter.attr("src", `./icons/${aligns[i]}.svg`);
-    console.log();
   });
 });
 
@@ -498,8 +497,6 @@ function removeBtn() {
     if (!canvas.getActiveObject()) {
       $(".deleteBtn").remove();
     }
-
-    console.log(canvas.getActiveObject());
   });
 
   canvas.on("object:modified", (e) => {
