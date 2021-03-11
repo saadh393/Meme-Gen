@@ -11,6 +11,7 @@ const cData = {
   alignment: undefined,
   activeFontMenu: [],
 };
+
 // Initialize Values
 init();
 
@@ -121,32 +122,14 @@ canvas.setBackgroundImage(template.src, canvas.renderAll.bind(canvas), {
 
 // Add Text
 btnAddText.addEventListener("click", (e) => {
-  console.log("clicked");
   removeInactiveDialogs();
+  cData.activeFontMenu.push("#ido_main");
   $("#ido_main").show();
+  toolbar.hide();
   cData.activeFontMenu.push("#ido_main"); //> ido_main
 
   ido_ok.addEventListener("click", (e) => {
-    // if (!textBox) {
-    //   // Creating New
-    //   text = new fabric.Textbox(ido_Text.value, {
-    //     left: 100,
-    //     top: 100,
-    //   });
-    //   text.centeredScaling = true;
-    //   text.set("fontWeight", idoData.bold ? "bold" : "normal");
-    //   text.set("fontFamily", "Poppins");
-    //   canvas.add(text).renderAll();
-    //   fontsSubMenuVisibility();
-    // } else {
-    //   // Editing Existing
-    //   currentSelection.text = ido_Text.value;
-    //   canvas.add(currentSelection).renderAll();
-    //   // canvas.getActiveObject().set("text", ido_Text.value);
-    //   // canvas.requestRenderAll();
-    //   currentSelection = 0;
-    // }
-
+    toolbar.show();
     // Creating New
     text = new fabric.Textbox(ido_Text.value, {
       left: 100,
@@ -162,6 +145,7 @@ btnAddText.addEventListener("click", (e) => {
   });
 
   document.getElementById("ido_close").addEventListener("click", () => {
+    toolbar.show();
     ido_Text.value = "";
     ido_Main.hide();
   });
@@ -337,6 +321,8 @@ function fontPropertiesEvents() {
 }
 
 function defaultPropartyValues() {
+  // calculateCanvas();
+
   currentSelection = 0;
   textBox = false;
 
@@ -381,6 +367,9 @@ function defaultPropartyValues() {
 function init() {
   canvas = new fabric.Canvas("canvas");
   canvas.selection = false; // Disable Drag Selection
+
+  // Toolbar
+  toolbar = $("#toolbar");
 
   menuText = document.getElementById("dialogFont");
   btnAddText = document.getElementById("addText");
@@ -781,4 +770,40 @@ function updateStrokeColor(colorCode) {
     canvas.getActiveObject().set(cData.stroke);
     canvas.requestRenderAll();
   }
+}
+
+function gcd(a, b) {
+  return b == 0 ? a : gcd(b, a % b);
+}
+
+function getAspctRatio(w, h) {
+  var r = gcd(w, h);
+  return { w: w / r, h: h / r };
+}
+
+function calculateCanvas(width, height) {
+  const { w, h } = getAspctRatio(width, height);
+  console.log(w, h);
+  // Main Canvas Positioning
+  const toolbar = document.getElementById("toolbar");
+  const mainCanvas = document.getElementById("canvas");
+  toolbarH = toolbar.offsetHeight;
+  extraH = mainSlider.offsetHeight * 2 + 50;
+  viewPortHeight = window.innerHeight;
+  viewPortWidth = window.innerWidth - 20;
+
+  canvasHeight = viewPortHeight - (toolbarH + extraH);
+  canvasWidth = (viewPortHeight / h) * w;
+  document.getElementById("contain").style.height = canvasHeight + 100 + "px";
+
+  if (viewPortWidth < canvasWidth) {
+    canvasWidth = viewPortWidth;
+    canvasHeight = (viewPortWidth / w) * h;
+  }
+
+  canvas.setWidth(canvasWidth);
+  canvas.setHeight(canvasHeight);
+  canvas.renderAll();
+
+  console.log(mainCanvas.style.top);
 }

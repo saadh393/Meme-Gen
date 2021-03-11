@@ -1,6 +1,25 @@
+let templateMenu = document.getElementById("templateMenu");
+document.getElementById("templateChooserRoot").style.display = "none";
+
+templateMenu.onclick = () => {
+  document.getElementById("templateChooserRoot").style.display = "block";
+};
+
 let templateList = document.getElementById("templateList");
+let templateRoot = document.getElementById("templateChooserRoot");
+
 for (item of templateList.children) {
+  let imageWidth = item.naturalWidth;
+  let imageHeight = item.naturalHeight;
+
   item.onclick = (e) => {
-    console.log(e);
+    calculateCanvas(imageWidth, imageHeight);
+    templateRoot.style.display = "none";
+    template.src = e.target.src;
+    canvas.setBackgroundImage(template.src, canvas.renderAll.bind(canvas), {
+      scaleX: canvas.width / imageWidth,
+      scaleY: canvas.height / imageHeight,
+    });
+    canvas.renderAll();
   };
 }

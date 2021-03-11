@@ -37,7 +37,7 @@
 
      -->
 
-    <div class="container">
+    <div class="container" id="contain">
       <!-- <h4 id="log">Hello</h4> -->
       <canvas id="canvas" width="360px" height="640px"></canvas>
       <div id="ido_main">
@@ -76,10 +76,13 @@
       </div>
     </div>
 
+    <!-- Toolbar -->
+    <div id="toolbar">Tool Menus will be shown here</div>
+
     <!-- Main Menu Silder -->
     <div class="slider" id="mainSlider">
       <div class="slider-container">
-        <div class="slider-Item">
+        <div class="slider-Item" id="templateMenu">
           <div class="alignItem">
             <img src="./icons/main-menu/template.png" />
             <p>Template</p>
@@ -252,14 +255,14 @@
     <!-- Template Chooser -->
     <div id="templateChooserRoot">
       <div class="templates" id="templateList">
-        <img src="./templates/template1.jpg" alt="" />
-        <img src="./templates/template2.jpg" alt="" />
-        <img src="./templates/template3.jpg" alt="" />
-        <img src="./templates/template4.jpg" alt="" />
-        <img src="./templates/template1.jpg" alt="" />
-        <img src="./templates/template2.jpg" alt="" />
-        <img src="./templates/template3.jpg" alt="" />
-        <img src="./templates/template4.jpg" alt="" />
+        <img src="./templates/template1.jpg" onclick="updateTemplate()" alt="" />
+        <img src="./templates/template2.jpg" onclick="updateTemplate()" alt="" />
+        <img src="./templates/template3.jpg" onclick="updateTemplate()" alt="" />
+        <img src="./templates/template4.jpg" onclick="updateTemplate()" alt="" />
+        <img src="./templates/template1.jpg" onclick="updateTemplate()" alt="" />
+        <img src="./templates/template2.jpg" onclick="updateTemplate()" alt="" />
+        <img src="./templates/template3.jpg" onclick="updateTemplate()" alt="" />
+        <img src="./templates/template4.jpg" onclick="updateTemplate()" alt="" />
       </div>
     </div>
 

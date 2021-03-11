@@ -30,10 +30,19 @@ body {
   /* box-sizing: border-box; */
   overflow: hidden;
   background-color: #444;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .container {
   max-width: 360px;
   margin: 0 auto;
+  display: grid;
+  justify-content: center;
+  align-content: center;
 }
 
 .flex {
@@ -64,6 +73,8 @@ a:hover {
   border: 1px solid #444;
   margin-top: 10px;
   border-radius: 2px;
+  left: 50% !important;
+  transform: translateX(-50%);
 }
 
 /* Font Colors */
@@ -244,5 +255,10 @@ input[type="color"]::-webkit-color-swatch {
   flex-direction: column;
 }
 .displayNone {
+  display: none;
+}
+
+/* Default Div Behaviour */
+#templateChooserRoot {
   display: none;
 }

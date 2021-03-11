@@ -5,6 +5,20 @@
   margin: 0%;
   padding: 0;
 }
+/* toolbar */
+#toolbar {
+  width: 100%;
+  height: 50px;
+  background-color: rgb(44, 42, 46);
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .slider {
   display: block;
   width: 100%;
@@ -271,6 +285,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   position: relative;
   top: 0px;
   align-self: baseline;
+  z-index: 3;
 }
 
 /* Formating Icons => Bold Italic Underline */
@@ -335,6 +350,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   color: #fff;
   z-index: 1;
   margin-left: 5px;
+  color: transparent;
 }
 #imgLoader::-webkit-file-upload-button {
   width: 60px;
