@@ -89,12 +89,19 @@
           </div>
         </div>
 
-        <div class="slider-Item bgGradient_1" id="dialogFont">
+        <div class="slider-Item">
+          <div class="alignItem" id="addText">
+            <img src="./icons/text-menu/text.png" />
+            <p>Text</p>
+          </div>
+        </div>
+
+        <!-- <div class="slider-Item bgGradient_1" id="dialogFont">
           <div class="alignItem">
             <img src="./icons/main-menu/text.png" />
             <p>Text</p>
           </div>
-        </div>
+        </div> -->
 
         <div class="slider-Item">
           <input type="file" id="imgLoader" />
@@ -126,13 +133,6 @@
     <!-- Font Properties-->
     <div class="slider" id="font-slider-properties">
       <div class="slider-container">
-        <div class="slider-Item">
-          <div class="alignItem" id="addText">
-            <img src="./icons/text-menu/text.png" />
-            <p>Text</p>
-          </div>
-        </div>
-
         <div class="slider-Item">
           <div class="alignItem" id="chnageFont">
             <img src="./icons/text-menu/font.png" />
@@ -254,6 +254,10 @@
 
     <!-- Template Chooser -->
     <div id="templateChooserRoot">
+      <div class="header">
+        <h2 id="closeTemplate">+</h2>
+        <h3>Choose Template</h3>
+      </div>
       <div class="templates" id="templateList">
         <img src="./templates/template1.jpg" onclick="updateTemplate()" alt="" />
         <img src="./templates/template2.jpg" onclick="updateTemplate()" alt="" />

@@ -32,6 +32,7 @@ canvas.on("object:selected", (e) => {
     cData.underline = canvas.getActiveObject().underline;
     cData.alignment = canvas.getActiveObject().textAlign;
     cData.fontSize = canvas.getActiveObject().fontSize;
+    fontSliderProperties.show("slide", { direction: "down" }, 300);
 
     if (canvas.getActiveObject().shadow) {
       cData.shadowBlur = canvas.getActiveObject().shadow.blur || 0;
@@ -55,7 +56,6 @@ canvas.on("object:selected", (e) => {
     }
 
     currentSelection = e.target;
-    ido_Text.value = e.target.text;
     fontSliderProperties.show();
   }
 });
@@ -67,18 +67,13 @@ canvas.on("selection:cleared", (e) => {
   cData.alignment = undefined;
   cData.shadowBlur = 0;
 
-  // Add Text Customizations
-  // fontsSubMenuVisibility();
-  // fontSliderProperties.hide(); // style.display = 'none'
-  // $("#colorPickerSlider").hide();
-  // $(".textAlign").remove();
-
   ido_Text.value = "";
-  fontFamilyProperties.hide();
-  fontSizeController.hide();
+  // fontFamilyProperties.hide();
+  // fontSizeController.hide();
   removeInactiveDialogs();
   currentSelection = 0;
   cData.colorPickerVisible = false;
+  fontSliderProperties.hide("slide", { direction: "down" }, 300);
 });
 
 removeBtn(); // for Remove Icon
@@ -139,7 +134,6 @@ btnAddText.addEventListener("click", (e) => {
     text.set("fontWeight", idoData.bold ? "bold" : "normal");
     text.set("fontFamily", "Poppins");
     canvas.add(text).renderAll();
-    fontsSubMenuVisibility();
     ido_Main.hide();
     ido_Text.value = "";
   });
@@ -208,11 +202,6 @@ btnAddText.addEventListener("click", (e) => {
 });
 
 function mainMenuEvents() {
-  // Text Sub Menu Bar Appearence Controller
-  menuText.addEventListener("click", () => {
-    fontsSubMenuVisibility();
-  });
-
   // Sub Menu Events
   fontPropertiesEvents();
 }
@@ -221,7 +210,8 @@ function fontPropertiesEvents() {
   // Change Font Family
   chnageFont.on("click", () => {
     if (currentSelection == 0) return;
-    fontFamilyProperties.show();
+    // fontFamilyProperties.show();
+    fontFamilyProperties.toggle();
     removeInactiveDialogs();
     cData.activeFontMenu.push("#fontFamily-properties");
   });
@@ -359,7 +349,6 @@ function defaultPropartyValues() {
   text.set("fontWeight", idoData.bold ? "bold" : "normal");
   text.set("fontFamily", "Poppins");
   canvas.add(text).renderAll();
-  fontsSubMenuVisibility();
   ido_Main.hide();
   ido_Text.value = "";
 }
@@ -586,10 +575,6 @@ function removeBtn() {
   });
 }
 
-function fontsSubMenuVisibility() {
-  fontSliderProperties.fadeToggle(300, "linear");
-}
-
 function updateFont(fontName) {
   // console.log(selectionType);
   if (cData.selectionType == 0) return;
@@ -640,7 +625,6 @@ function removeInactiveDialogs() {
     return;
   } else {
     cData.activeFontMenu.forEach((item) => {
-      console.log("Color Picker Visible ", cData.colorPickerVisible);
       if ($(item).is(":visible")) {
         $(item).hide();
       }

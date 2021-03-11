@@ -5,6 +5,27 @@
   right: 0;
   bottom: 0;
   overflow-y: auto; /*added*/
+  background-color: #fff;
+  padding: 10px;
+  z-index: 4;
+}
+#templateChooserRoot h3 {
+  padding: 0.9rem;
+}
+
+#templateChooserRoot .header {
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
+}
+
+#templateChooserRoot .header h2 {
+  background-color: lightgray;
+  border-radius: 100%;
+  font-weight: 400;
+  transform: rotate(45deg);
+  width: 30px;
+  text-align: center;
 }
 
 .templates {
@@ -20,4 +41,7 @@
 .templates img {
   width: 100%;
   height: 100%;
+  padding: 0.5rem;
+  border: 1px solid gray;
+  border-radius: 3px;
 }

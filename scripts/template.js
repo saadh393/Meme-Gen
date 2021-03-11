@@ -1,12 +1,17 @@
 let templateMenu = document.getElementById("templateMenu");
+let templateList = document.getElementById("templateList");
+let templateRoot = document.getElementById("templateChooserRoot");
+let closeTemplate = document.getElementById("closeTemplate");
+
+closeTemplate.onclick = () => {
+  templateRoot.style.display = "none";
+};
+
 document.getElementById("templateChooserRoot").style.display = "none";
 
 templateMenu.onclick = () => {
   document.getElementById("templateChooserRoot").style.display = "block";
 };
-
-let templateList = document.getElementById("templateList");
-let templateRoot = document.getElementById("templateChooserRoot");
 
 for (item of templateList.children) {
   let imageWidth = item.naturalWidth;
