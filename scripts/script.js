@@ -457,32 +457,13 @@ function removeBtn() {
 
   canvas.on("mouse:down", (e) => {
     console.log("mouse:down");
-    if (cData.selectionType != "textbox") {
-      $(".textAlign").hide("fade", 100, function () {
-        $(".textAlign").remove();
-      });
-      $(".btnBold").hide("fade", 100, function () {
-        $(".btnBold").remove();
-      });
-      $(".btnItalic").hide("fade", 100, function () {
-        $(".btnItalic").remove();
-      });
-      $(".btnUnderline").hide("fade", 100, function () {
-        $(".btnUnderline").remove();
-      });
-    }
     cData.selectionType == "textbox" ? (textBox = true) : (textBox = false);
-    if (!canvas.getActiveObject()) {
-      $(".deleteBtn").remove();
-    }
+    !textBox ? $("#formatingMenus").hide() : $("#formatingMenus").show();
+    !canvas.getActiveObject() && $(".deleteBtn").remove();
   });
 
   canvas.on("object:modified", (e) => {
     addDeleteBtn(e.target.oCoords.tr.x, e.target.oCoords.tr.y);
-
-    if (cData.selectionType == "textbox") {
-      selectedTextItemActivity("object:modified");
-    }
   });
 
   canvas.on("object:scaling", (e) => {
@@ -499,15 +480,10 @@ function removeBtn() {
 
   // Delete Button CLick Event
   $(document).on("click", ".deleteBtn", () => {
-    console.log(canvas.getActiveObject());
-
     if (canvas.getActiveObject()) {
       canvas.remove(canvas.getActiveObject());
       $(".deleteBtn").remove();
-      $(".btnBold").remove();
-      $(".btnItalic").remove();
-      $(".btnUnderline").remove();
-      $(".textAlign").remove();
+      $("#formatingMenus").hide();
     }
   });
 
@@ -564,7 +540,7 @@ function removeBtn() {
   // textAlign Button CLick Event
   $(document).on("click", ".textAlign", () => {
     if (canvas.getActiveObject()) {
-      var alignments = ["left", "center", "right", "justify"];
+      var alignments = ["left", "center", "right", "justified"];
       let i = (alignments.indexOf(cData.alignment) % 4) + 1;
       i > 3 ? (i = 0) : (i = i);
       canvas.getActiveObject().set("textAlign", alignments[i]);
@@ -576,7 +552,6 @@ function removeBtn() {
 }
 
 function updateFont(fontName) {
-  // console.log(selectionType);
   if (cData.selectionType == 0) return;
   canvas.getActiveObject().set("fontFamily", fontName);
   canvas.requestRenderAll();
@@ -589,8 +564,6 @@ function updateFontSize() {
     $("#fontSizeVal")[0].innerText = val;
     canvas.getActiveObject().set("fontSize", val);
     canvas.requestRenderAll();
-    // currentSelection.fontSize = val;
-    // canvas.add(currentSelection).renderAll();
   };
 }
 

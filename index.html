@@ -77,7 +77,20 @@
     </div>
 
     <!-- Toolbar -->
-    <div id="toolbar">Tool Menus will be shown here</div>
+    <div id="toolbar">
+      <div class="arrow">
+        <img src="./icons/left-arrow.svg" />
+      </div>
+      <div id="formatingMenus" style="display: none">
+        <img src="./icons/center.svg" class="textAlign" />
+        <img src="./icons/bold-text.svg" class="btnBold" />
+        <img src="./icons/italic-text.svg" class="btnItalic" />
+        <img src="./icons/underline-text.svg" class="btnUnderline" />
+      </div>
+      <div class="arrow">
+        <img src="./icons/right-arrow.svg" />
+      </div>
+    </div>
 
     <!-- Main Menu Silder -->
     <div class="slider" id="mainSlider">
@@ -104,7 +117,7 @@
         </div> -->
 
         <div class="slider-Item">
-          <input type="file" id="imgLoader" />
+          <input type="file" id="imgLoader" accept="image/png, image/jpeg" />
           <div class="alignItem fileUploaderMenu">
             <img src="./icons/main-menu/image.png" />
             <p>Image</p>
