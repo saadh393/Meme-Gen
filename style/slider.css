@@ -24,6 +24,17 @@
   width: 24px;
 }
 
+#formatingMenus img {
+  background-color: rgb(255 255 255 / 86%);
+  width: 30px;
+  margin: 5px;
+  padding: 1px;
+  border-radius: 2px;
+  border: 1px solid #1a1916;
+  /* box-sizing: content-box; */
+  box-shadow: 0 0 5px 0px #673ab7b5;
+}
+
 .slider {
   display: block;
   width: 100%;
@@ -382,4 +393,48 @@ input[type="range"]::-webkit-slider-runnable-track {
   overflow-y: scroll;
   bottom: 0;
   left: 0;
+}
+
+/* Paint Dialog Overlay */
+#paintDialogMain {
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+}
+.paintMenus {
+  width: 80%;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 2px;
+}
+.paintMenus .brash {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 1rem auto;
+}
+.paintMenus .brash img {
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+}
+
+.brashButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.brashButtons button {
+  padding: 0.3rem 0.8rem;
+  /* border: none;
+  outline: none; */
 }

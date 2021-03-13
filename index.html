@@ -30,50 +30,31 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
   <body>
-    <!-- 
-        Abbreviations
-          1. Input Dialog Overlays = ido
-
-
-     -->
-
     <div class="container" id="contain">
-      <!-- <h4 id="log">Hello</h4> -->
       <canvas id="canvas" width="360px" height="640px"></canvas>
-      <div id="ido_main">
-        <div id="formatingArea">
-          <img src="./icons/close.png" id="ido_close" width="40px" />
-          <div class="formatingBtns">
-            <img src="./icons/center.svg" id="formatingArea-center" />
-            <img src="./icons/bold-text.svg" id="formatingArea-bold" />
-            <img src="./icons/italic-text.svg" id="formatingArea-italic" />
-            <img src="./icons/underline-text.svg" id="formatingArea-underline" />
-          </div>
-          <img src="./icons/right-2.png" id="ido_ok" width="40px" />
-        </div>
-        <textarea
-          id="ido_Text"
-          onkeyup="textAreaAdjust(this)"
-          style="overflow: hidden"
-          maxlength="250"
-          placeholder="Describe yourself here..."
-        ></textarea>
-        <script>
-          function textAreaAdjust(element) {
-            element.style.height = "1px";
-            element.style.height = 25 + element.scrollHeight + "px";
-          }
-        </script>
-        <!-- <input
-          type="text"
-          id="textFortext"
-          value="Lorem ipsum dolor sit amet consectetur, adipisicing elit."
-        /> -->
-        <!-- <div class="btnBottom">
-          <a href="#" id="cancelText">Cancel</a>
-          <a href="#" id="btnForText">Ok</a>
-        </div> -->
+    </div>
+
+    <!-- Input Dialog Overlay -->
+    <div id="ido_main">
+      <div id="formatingArea">
+        <img src="./icons/close.png" id="ido_close" width="40px" />
+
+        <img src="./icons/right-2.png" id="ido_ok" width="40px" />
       </div>
+      <textarea
+        id="ido_Text"
+        onkeyup="textAreaAdjust(this)"
+        style="overflow: hidden"
+        maxlength="250"
+        placeholder="Describe yourself here..."
+        style="font-style: normal"
+      ></textarea>
+      <script>
+        function textAreaAdjust(element) {
+          element.style.height = "1px";
+          element.style.height = 25 + element.scrollHeight + "px";
+        }
+      </script>
     </div>
 
     <!-- Toolbar -->
@@ -82,6 +63,7 @@
         <img src="./icons/left-arrow.svg" />
       </div>
       <div id="formatingMenus" style="display: none">
+        <!-- Js Line : 440 -->
         <img src="./icons/center.svg" class="textAlign" />
         <img src="./icons/bold-text.svg" class="btnBold" />
         <img src="./icons/italic-text.svg" class="btnItalic" />
@@ -109,22 +91,12 @@
           </div>
         </div>
 
-        <!-- <div class="slider-Item bgGradient_1" id="dialogFont">
-          <div class="alignItem">
-            <img src="./icons/main-menu/text.png" />
-            <p>Text</p>
-          </div>
-        </div> -->
-
         <div class="slider-Item">
           <input type="file" id="imgLoader" accept="image/png, image/jpeg" />
           <div class="alignItem fileUploaderMenu">
             <img src="./icons/main-menu/image.png" />
             <p>Image</p>
           </div>
-          <!-- <label for="imgLoader">Image </label> -->
-          <!-- <div class="alignItem">
-          </div> -->
         </div>
 
         <div class="slider-Item">
@@ -189,7 +161,6 @@
         <!-- 
             Using renderFontsDom function to Render Font Names Line : 504
             Invoked at line 236
-          
           -->
       </div>
     </div>
@@ -198,11 +169,11 @@
     <div class="popupContainer" id="fontSizeController">
       <img src="./icons/Down Btn.svg" onclick="removeInactiveDialogs()" />
       <div class="vh"></div>
-      <div class="field">
+      <!-- <div class="field">
         <div class="value left">Amount</div>
         <input type="range" min="5" max="100" id="fontSizeSlider" value="15" step="1" />
         <div class="value right" id="fontSizeVal">100</div>
-      </div>
+      </div> -->
     </div>
 
     <!-- Color Picker Slider -->
@@ -211,7 +182,6 @@
         <!-- 
             Using renderColorDom function to Render Colors Line : 566
             Invoked in line 237
-          
           -->
       </div>
     </div>
@@ -283,10 +253,58 @@
       </div>
     </div>
 
+    <!-- Paint Dialog Overlay -->
+    <div id="paintDialogMain">
+      <div class="paintMenus">
+        <div class="brash">
+          <img
+            src="./icons/paint/pencil-stroke.svg"
+            onclick="selectBrush(event, 'PencilBrush')"
+            data-brush="PencilBrush"
+          />
+          <img
+            src="./icons/paint/circle-stroke.svg"
+            onclick="selectBrush(event, 'CircleBrush')"
+            data-brush="CircleBrush"
+          />
+          <img
+            src="./icons/paint/spray-stroke.svg"
+            onclick="selectBrush(event, 'squarePatternBrush')"
+            data-brush="squarePatternBrush"
+          />
+          <img
+            src="./icons/paint/pattern-stroke.svg"
+            onclick="selectBrush(event, 'diamondPatternBrush')"
+            data-brush="diamondPatternBrush"
+          />
+          <img
+            src="./icons/paint/hLine-stroke.svg"
+            onclick="selectBrush(event, 'hLinePatternBrush')"
+            data-brush="hLinePatternBrush"
+          />
+          <img
+            src="./icons/paint/vLine-stroke.svg"
+            onclick="selectBrush(event, 'vLinePatternBrush')"
+            data-brush="vLinePatternBrush"
+          />
+        </div>
+        <div
+          class="slider"
+          style="position: static; background-color: rgb(251 0 0 / 0%); margin: 1rem auto"
+        >
+          <div class="slider-container" id="brashColor"><!---will be Rendered by JS--></div>
+        </div>
+        <div id="brashSize"><!---will be Rendered by JS--></div>
+        <div class="brashButtons">
+          <button id="paintCancel">Cancel</button>
+          <button id="paintOk">Ok</button>
+        </div>
+      </div>
+    </div>
+
     <script src="./scripts/script.js"></script>
     <script src="./scripts/image.js"></script>
     <script src="./scripts/canvasArea.js"></script>
-    <!-- <script src="./scripts/picker.js"></script> -->
     <script src="./scripts/colorPicker.js"></script>
     <script src="./scripts/template.js"></script>
     <script>

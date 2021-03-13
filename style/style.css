@@ -220,9 +220,11 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 input[type="color"]::-webkit-color-swatch {
   /* border: 2px solid #fff; */
-  background-image: url("../icons/picker.png");
+  background-image: url("../icons/picker.svg");
   background-repeat: no-repeat;
   background-size: cover;
+  border: none;
+  background-color: rgb(251 0 0 / 0%);
   /* background-color: rgb(0, 0, 0); */
   border-radius: 100%;
   /* box-shadow: 2px 2px 10px rgb(34, 34, 34); */
@@ -261,4 +263,11 @@ input[type="color"]::-webkit-color-swatch {
 /* Default Div Behaviour */
 #templateChooserRoot {
   display: none;
+}
+
+.selected {
+  border: 1px solid var(--Blue800);
+  background-color: #acb7fa4f;
+  /* padding: 5px; */
+  /* box-sizing: content-box; */
 }
