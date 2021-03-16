@@ -29,14 +29,8 @@
 }
 
 #formatingMenus img {
-  background-color: rgb(255 255 255 / 86%);
-  width: 30px;
-  margin: 5px;
-  padding: 1px;
-  border-radius: 2px;
-  border: 1px solid #1a1916;
-  /* box-sizing: content-box; */
-  box-shadow: 0 0 5px 0px #673ab7b5;
+  margin-right: 5px;
+  border-radius: 5px;
 }
 
 .slider {
@@ -412,6 +406,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   align-items: center;
   background: rgba(0, 0, 0, 0.8);
 }
+
 .dialogContainer {
   width: 80%;
   background-color: #fff;

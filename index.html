@@ -80,22 +80,22 @@
 
     <!-- Main Menu Silder -->
     <div class="slider" id="mainSlider">
-      <div class="slider-container">
-        <div class="slider-Item" id="templateMenu">
+      <div class="slider-container" id="mainSliderContainer">
+        <div class="slider-Item" id="templateMenu" data-menu="template">
           <div class="alignItem">
             <img src="./icons/main-menu/template.png" />
             <p>Template</p>
           </div>
         </div>
 
-        <div class="slider-Item">
+        <div class="slider-Item" data-menu="text">
           <div class="alignItem" id="addText">
             <img src="./icons/text-menu/text.png" />
             <p>Text</p>
           </div>
         </div>
 
-        <div class="slider-Item">
+        <div class="slider-Item" data-menu="image">
           <input type="file" id="imgLoader" accept="image/png, image/jpeg" />
           <div class="alignItem fileUploaderMenu">
             <img src="./icons/main-menu/image.png" />
@@ -103,14 +103,14 @@
           </div>
         </div>
 
-        <div class="slider-Item" id="MenuShape">
+        <div class="slider-Item" id="MenuShape" data-menu="shape">
           <div class="alignItem">
             <img src="./icons/main-menu/shapes.png" />
             <p>Shape</p>
           </div>
         </div>
 
-        <div class="slider-Item">
+        <div class="slider-Item" data-menu="paint">
           <div class="alignItem" id="menuPaint">
             <img src="./icons/main-menu/paint.png" />
             <p>Paint</p>
@@ -171,7 +171,7 @@
 
     <!-- Font Size Range Slider -->
     <div class="popupContainer" id="fontSizeController">
-      <img src="./icons/Down Btn.svg" onclick="removeInactiveDialogs()" />
+      <img src="./icons/Down-Btn.png" onclick="removeInactiveDialogs()" />
       <div class="vh"></div>
       <!-- <div class="field">
         <div class="value left">Amount</div>
@@ -246,14 +246,15 @@
         <h3>Choose Template</h3>
       </div>
       <div class="templates" id="templateList">
-        <img src="./templates/template1.jpg" onclick="updateTemplate()" alt="" />
-        <img src="./templates/template2.jpg" onclick="updateTemplate()" alt="" />
-        <img src="./templates/template3.jpg" onclick="updateTemplate()" alt="" />
-        <img src="./templates/template4.jpg" onclick="updateTemplate()" alt="" />
-        <img src="./templates/template1.jpg" onclick="updateTemplate()" alt="" />
-        <img src="./templates/template2.jpg" onclick="updateTemplate()" alt="" />
-        <img src="./templates/template3.jpg" onclick="updateTemplate()" alt="" />
-        <img src="./templates/template4.jpg" onclick="updateTemplate()" alt="" />
+        <img src="./templates/template1.jpg" alt="" />
+        <img src="./templates/template2.jpg" alt="" />
+        <img src="./templates/template3.jpg" alt="" />
+        <img src="./templates/template4.jpg" alt="" />
+        <img src="./templates/template1.jpg" alt="" />
+        <img src="./templates/template2.jpg" alt="" />
+        <img src="./templates/template3.jpg" alt="" />
+        <img src="./templates/template4.jpg" alt="" />
+        <!-- onclick="updateTemplate()" -->
       </div>
     </div>
 

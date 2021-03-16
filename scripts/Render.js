@@ -1,7 +1,7 @@
 function renderMenuState(className, property, value) {
   if (cData[property] == value[0]) {
     canvas.getActiveObject().set(property, value[1]);
-    document.querySelector(className).style.backgroundColor = "var(--Orange500)";
+    document.querySelector(className).style.backgroundColor = "#3f51b5";
     cData[property] = value[1];
   } else {
     canvas.getActiveObject().set(property, value[0]);
@@ -44,7 +44,8 @@ function renderColorDom(id, colorField, handleFunc, isDisable) {
   downBtnDiv.className = "slider-Item";
 
   const image = document.createElement("img");
-  image.src = "./icons/Down Btn.svg";
+  image.src = "./icons/Down-Btn.png";
+  //   image.src = "./icons/Down Btn.svg";
   image.onclick = removeInactiveDialogs;
 
   downBtnDiv.appendChild(image);

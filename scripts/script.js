@@ -2,6 +2,7 @@ const cData = {
   selectionType: undefined,
   alignment: undefined,
   activeFontMenu: [],
+  activeMainMenu: [],
 };
 
 const shapeData = {
@@ -19,7 +20,7 @@ init();
 defaultPropartyValues();
 
 // Event Handling
-mainMenuEvents();
+menuEvents();
 
 // Event : When Any Object is Selected
 canvas.on("object:selected", (e) => {
@@ -74,6 +75,8 @@ canvas.on("selection:cleared", (e) => {
   ido_Text.value = "";
   currentSelection = 0;
   cData.colorPickerVisible = false;
+  textBox = false;
+  $("#formatingMenus").hide();
 });
 
 canvas.on("mouse:up", (e) => {
@@ -91,16 +94,14 @@ removeBtn(); // for Remove Icon
 // Setting Canvas Background
 const template = new Image(960, 862);
 template.src = "./templates/template1.jpg";
-canvas.setBackgroundImage(template.src, canvas.renderAll.bind(canvas), {
-  scaleX: canvas.width / 960,
-  scaleY: canvas.height / 862,
-});
+// canvas.setBackgroundImage(template.src, canvas.renderAll.bind(canvas), {
+//   scaleX: canvas.width / 960,
+//   scaleY: canvas.height / 862,
+// });
 
-// Add Text
-btnAddText.addEventListener("click", (e) => {
+function textMenuHandler() {
+  // Invoked Like:205
   removeInactiveDialogs();
-
-  $("#ido_main").show();
   toolbar.hide();
   cData.activeFontMenu.push("#ido_main");
 
@@ -123,6 +124,7 @@ btnAddText.addEventListener("click", (e) => {
 
   document.getElementById("ido_close").addEventListener("click", () => {
     resetIdo();
+    activeMenuState("");
   });
 
   /* Formating Area of ido */
@@ -186,15 +188,44 @@ btnAddText.addEventListener("click", (e) => {
     ido_Text.style.textAlign = aligns[i];
     ido_formateCenter.attr("src", `./icons/${aligns[i]}.svg`);
   });
-});
+}
 
-function mainMenuEvents() {
+function menuEvents() {
   // Sub Menu Events
   fontPropertiesEvents();
+
+  // Template Choose Menu
+  templateMenu.onclick = () => {
+    canvas.backgroundImage ? $("#closeTemplate").show() : $("#closeTemplate").hide();
+    document.getElementById("templateChooserRoot").style.display = "block";
+    activeMenuState("template");
+  };
+
+  // Text Menu
+  textMenu.addEventListener("click", (e) => {
+    console.log($("#ido_main").is(":visible"));
+    if (!$("#ido_main").is(":visible")) {
+      $("#ido_main").show();
+      // textMenuHandler();
+      activeMenuState("text");
+    } else {
+      $("#ido_main").hide();
+      activeMenuState("");
+    }
+  });
 
   // Menu Shape
   $("#MenuShape").click(() => {
     renderMenuDialog("shapeRoot", "shapeContainer", "shapeImages", shapeMenuHandler);
+    activeMenuState("shape");
+  });
+
+  paintMenu.click(() => {
+    $("#paintDialogMain").show();
+    removeInactiveDialogs();
+    activeMenuState("paint");
+    canvas.discardActiveObject();
+    canvas.renderAll();
   });
 }
 
@@ -318,7 +349,7 @@ function defaultPropartyValues() {
   $("#paintDialogMain").hide();
 
   // Image Browse Input Field Width
-  const menuWidth = btnAddText.offsetWidth;
+  const menuWidth = textMenu.offsetWidth;
   imageBrowseInputField.style.width = menuWidth + "px";
   imageBrowseInputField.style.marginRight = 5 + "px";
 
@@ -336,6 +367,7 @@ function defaultPropartyValues() {
   PaintDialogOverlay();
 
   renderRangeSlider("fontSizeSlider", "fontSizeVal", "fontSizeController");
+  textMenuHandler();
 
   // Positioning
   shadowSlider[0].style.bottom = mainSlider.offsetHeight * 2 - 1 + "px";
@@ -350,7 +382,7 @@ function init() {
   toolbar = $("#toolbar");
 
   menuText = document.getElementById("dialogFont");
-  btnAddText = document.getElementById("addText");
+  textMenu = document.getElementById("addText");
   ido_Main = $("#ido_main"); //document.getElementById("ido_main");
   ido_Text = document.getElementById("ido_Text");
   ido_ok = document.getElementById("ido_ok");
@@ -360,6 +392,7 @@ function init() {
   // Main Menu
   chnageFont = $("#chnageFont");
   paintMenu = $("#menuPaint");
+  templateMenu = document.getElementById("templateMenu");
 
   // Font Properties Menu
   fontSliderProperties = $("#font-slider-properties");
@@ -516,8 +549,7 @@ function removeInactiveDialogs() {
     cData.activeFontMenu = [];
   }
   $(".deleteBtn").remove();
-  canvas.discardActiveObject();
-  canvas.renderAll();
+
   canvas.isDrawingMode && cancelDrawing();
 }
 
@@ -592,14 +624,14 @@ function calculateCanvas(width, height) {
 }
 
 function menuState(className, property, value) {
-  const color = cData[property] == value[0] ? "" : "var(--Orange500)";
+  const color = cData[property] == value[0] ? "" : "#3f51b5";
   document.querySelector(className).style.backgroundColor = color;
 }
 
 function resetIdo() {
   toolbar.show();
   ido_Text.value = "";
-  ido_Main.hide();
+  $("#ido_main").hide();
   idoData = {};
   idoData.italic = false;
   idoData.bold = false;
@@ -635,10 +667,6 @@ function PaintDialogOverlay() {
   renderColorDom("brashColor", "inputBrushColor", updateBrushColor, true);
   renderRangeSlider("brashRange", "brashRightValue", "brashSize");
 
-  paintMenu.click(() => {
-    $("#paintDialogMain").show();
-    removeInactiveDialogs();
-  });
   const selectedBrush = document.querySelector(`[data-brush=${paintData.brush}]`);
   selectedBrush.className += "selected";
 
@@ -948,6 +976,21 @@ function shapeFillColor(color) {
       if (colorItems.children[0].attributes[1].value === color) {
         colorItems.children[0].className += " circleSelected";
       }
+    }
+  }
+}
+
+function activeMenuState(_menuName) {
+  const menuCotainer = document.getElementById("mainSliderContainer");
+  $("#formatingMenus").hide();
+  canvas.discardActiveObject();
+  canvas.renderAll();
+
+  for (menu of menuCotainer.children) {
+    if (menu.dataset["menu"] === _menuName) {
+      menu.className += " bgGradient_1";
+    } else {
+      menu.classList.remove("bgGradient_1");
     }
   }
 }

@@ -1,17 +1,15 @@
-let templateMenu = document.getElementById("templateMenu");
 let templateList = document.getElementById("templateList");
 let templateRoot = document.getElementById("templateChooserRoot");
 let closeTemplate = document.getElementById("closeTemplate");
 
+canvas.backgroundImage ? $("#closeTemplate").show() : $("#closeTemplate").hide();
+
 closeTemplate.onclick = () => {
   templateRoot.style.display = "none";
+  activeMenuState("");
 };
 
-document.getElementById("templateChooserRoot").style.display = "none";
-
-templateMenu.onclick = () => {
-  document.getElementById("templateChooserRoot").style.display = "block";
-};
+// document.getElementById("templateChooserRoot").style.display = "none";
 
 for (item of templateList.children) {
   let imageWidth = item.naturalWidth;
@@ -27,5 +25,6 @@ for (item of templateList.children) {
     });
     canvas.remove(...canvas._objects);
     canvas.renderAll();
+    activeMenuState("");
   };
 }

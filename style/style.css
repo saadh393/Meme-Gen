@@ -277,7 +277,7 @@ button {
 
 /* Default Div Behaviour */
 #templateChooserRoot {
-  display: none;
+  display: block;
 }
 
 .selected {
