@@ -220,7 +220,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 input[type="color"]::-webkit-color-swatch {
   /* border: 2px solid #fff; */
-  background-image: url("../icons/picker.svg");
+  /* background-image: url("../icons/picker.svg"); */
   background-repeat: no-repeat;
   background-size: cover;
   border: none;
@@ -259,6 +259,21 @@ input[type="color"]::-webkit-color-swatch {
 .displayNone {
   display: none;
 }
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  border: none;
+  background-color: var(--Blue500);
+  border: 2px solid var(--Blue800);
+  color: #fff;
+  outline: none;
+  border-radius: 2px;
+  margin-right: 5px;
+  box-shadow: 3px 3px 13px 3px #303f9f6b;
+}
 
 /* Default Div Behaviour */
 #templateChooserRoot {
@@ -266,8 +281,9 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .selected {
-  border: 1px solid var(--Blue800);
+  border: 2px solid var(--Blue800);
   background-color: #acb7fa4f;
-  /* padding: 5px; */
-  /* box-sizing: content-box; */
+}
+.circleSelected {
+  border: 3px solid var(--Blue800);
 }

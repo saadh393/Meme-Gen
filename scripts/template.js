@@ -25,6 +25,7 @@ for (item of templateList.children) {
       scaleX: canvas.width / imageWidth,
       scaleY: canvas.height / imageHeight,
     });
+    canvas.remove(...canvas._objects);
     canvas.renderAll();
   };
 }

@@ -4,6 +4,14 @@ const cData = {
   activeFontMenu: [],
 };
 
+const shapeData = {
+  fillColor: "#6a1b9a",
+  fill: "",
+  stroke: 0,
+  strokeColor: "",
+  shape: "circle.svg",
+};
+
 // Initialize Values
 init();
 
@@ -48,6 +56,7 @@ canvas.on("object:selected", (e) => {
         strokeWidth: canvas.getActiveObject().strokeWidth || 0,
         stroke: canvas.getActiveObject().stroke || "rgb(0,0,0)",
         strokeLineCap: "butt",
+        strokeLineJoin: "round",
       };
     }
   }
@@ -65,6 +74,16 @@ canvas.on("selection:cleared", (e) => {
   ido_Text.value = "";
   currentSelection = 0;
   cData.colorPickerVisible = false;
+});
+
+canvas.on("mouse:up", (e) => {
+  // Drawing Down
+  if (!canvas.isDrawingMode) return;
+  const obj = canvas._objects;
+  const n = obj.length - 1;
+  canvas._objects[n].top = canvas._objects[n].top - 9.5;
+  canvas._objects[n].dirty = true;
+  canvas.renderAll();
 });
 
 removeBtn(); // for Remove Icon
@@ -172,6 +191,11 @@ btnAddText.addEventListener("click", (e) => {
 function mainMenuEvents() {
   // Sub Menu Events
   fontPropertiesEvents();
+
+  // Menu Shape
+  $("#MenuShape").click(() => {
+    renderMenuDialog("shapeRoot", "shapeContainer", "shapeImages", shapeMenuHandler);
+  });
 }
 
 function fontPropertiesEvents() {
@@ -291,6 +315,7 @@ function defaultPropartyValues() {
   strokeRootDiv.hide();
   shadowSlider.hide();
   ido_Main.hide();
+  $("#paintDialogMain").hide();
 
   // Image Browse Input Field Width
   const menuWidth = btnAddText.offsetWidth;
@@ -308,7 +333,7 @@ function defaultPropartyValues() {
   renderColorDom("colorPickerContainer", "inputColor", updateColor);
   renderColorDom("shadowColorRender", "shadowColorPicker", updateShadowColor);
   renderColorDom("strokeColorRender", "shadowColorPicker", updateStrokeColor);
-  renderPaintDialogOverlay();
+  PaintDialogOverlay();
 
   renderRangeSlider("fontSizeSlider", "fontSizeVal", "fontSizeController");
 
@@ -319,6 +344,7 @@ function defaultPropartyValues() {
 function init() {
   canvas = new fabric.Canvas("canvas");
   canvas.selection = false; // Disable Drag Selection
+  canvas.cornderStyle = "cirlce"; //rect
 
   // Toolbar
   toolbar = $("#toolbar");
@@ -333,6 +359,7 @@ function init() {
 
   // Main Menu
   chnageFont = $("#chnageFont");
+  paintMenu = $("#menuPaint");
 
   // Font Properties Menu
   fontSliderProperties = $("#font-slider-properties");
@@ -488,129 +515,10 @@ function removeInactiveDialogs() {
     });
     cData.activeFontMenu = [];
   }
-}
-
-function renderFontsDom() {
-  const fontList = [
-    "Poppins",
-    "Roboto",
-    "Oswald",
-    "Arial",
-    "Lobster",
-    "Pacifico",
-    "Satisfy",
-    "Bangers",
-    "Audiowide",
-    "Sacramento",
-  ];
-
-  fontList.forEach((fontName) => {
-    let p = document.createElement("p");
-    let fontNameContainer = document.getElementById("fontNameContainer");
-    p.className = "slider-Item";
-    p.onclick = () => updateFont(fontName);
-
-    p.style.fontFamily = fontName;
-    p.innerText = fontName;
-    fontNameContainer.appendChild(p);
-  });
-}
-
-function renderColorDom(id, colorField, handleFunc, isDisable) {
-  const rootDiv = document.getElementById(id);
-
-  // Down Button
-  const downBtnDiv = document.createElement("div");
-  downBtnDiv.className = "slider-Item";
-
-  const image = document.createElement("img");
-  image.src = "./icons/Down Btn.svg";
-  image.onclick = removeInactiveDialogs;
-
-  downBtnDiv.appendChild(image);
-  !isDisable && rootDiv.appendChild(downBtnDiv);
-
-  // Color Picker
-  const colorPickerDiv = document.createElement("div");
-  colorPickerDiv.className = "slider-Item";
-
-  const inputColor = document.createElement("input");
-  inputColor.style.cssText = "width: 35px; height: 35px; margin-top: 6px";
-  inputColor.type = "color";
-  inputColor.id = colorField;
-
-  colorPickerDiv.appendChild(inputColor);
-  rootDiv.appendChild(colorPickerDiv);
-
-  // Vartical Line
-  const vhDivSliderItem = document.createElement("div");
-  const vhDiv = document.createElement("div");
-
-  vhDivSliderItem.className = "slider-Item";
-  vhDiv.className = "vh";
-
-  vhDivSliderItem.appendChild(vhDiv);
-  rootDiv.appendChild(vhDivSliderItem);
-
-  // Colors
-  const colors = [
-    "#000000",
-    "#ef5350",
-    "#e53935",
-    "#ec407a",
-    "#ad1457",
-    "#3f51b5",
-    "#1565c0",
-    "#4caf50",
-    "#00796b",
-    "#ffc107",
-    "#ff5722",
-  ];
-  colors.forEach((color) => {
-    const sliderItem = document.createElement("div");
-    sliderItem.className = "slider-Item";
-
-    const colorBox = document.createElement("div");
-    colorBox.className = "colorBox";
-    colorBox.dataset.colorCode = color;
-    colorBox.style.backgroundColor = color;
-    colorBox.onclick = () => handleFunc(color);
-
-    sliderItem.appendChild(colorBox);
-    rootDiv.appendChild(sliderItem);
-  });
-}
-
-function renderRangeSlider(_inputId, _updatedId, _rootId) {
-  const field = document.createElement("div");
-  field.className = "field";
-
-  const amount = document.createElement("div");
-  amount.className = "value";
-  amount.className += " left";
-  amount.innerText = "Amount";
-
-  const input = document.createElement("input");
-  input.type = "range";
-  input.min = 5;
-  input.max = 100;
-  input.id = _inputId;
-  input.value = 15;
-  input.step = 1;
-  input.value = 15;
-
-  const rightValue = document.createElement("div");
-  rightValue.className = "value";
-  rightValue.className += " right";
-  rightValue.id = _updatedId;
-  rightValue.innerText = "100";
-
-  field.appendChild(amount);
-  field.appendChild(input);
-  field.appendChild(rightValue);
-
-  const root = document.getElementById(_rootId);
-  root.appendChild(field);
+  $(".deleteBtn").remove();
+  canvas.discardActiveObject();
+  canvas.renderAll();
+  canvas.isDrawingMode && cancelDrawing();
 }
 
 function updateColor(colorCode) {
@@ -683,18 +591,6 @@ function calculateCanvas(width, height) {
   console.log(mainCanvas.style.top);
 }
 
-function renderMenuState(className, property, value) {
-  if (cData[property] == value[0]) {
-    canvas.getActiveObject().set(property, value[1]);
-    document.querySelector(className).style.backgroundColor = "var(--Orange500)";
-    cData[property] = value[1];
-  } else {
-    canvas.getActiveObject().set(property, value[0]);
-    document.querySelector(className).style.backgroundColor = "";
-    cData[property] = value[0];
-  }
-}
-
 function menuState(className, property, value) {
   const color = cData[property] == value[0] ? "" : "var(--Orange500)";
   document.querySelector(className).style.backgroundColor = color;
@@ -709,15 +605,40 @@ function resetIdo() {
   idoData.bold = false;
 }
 
-function renderPaintDialogOverlay() {
+// Brush Selection
+function selectBrush(e, brushName) {
+  const brush = document.querySelector(".images");
+  for (image of brush.children) {
+    image.className = "";
+  }
+  paintData.brush = brushName;
+  e.target.className += "selected";
+}
+
+function updateBrushColor(color, e) {
+  const brushColor = document.getElementById("brashColor");
+  for (let color of brushColor.children) {
+    if (color.children[0].localName === "div" && color.children[0].className !== "vh") {
+      color.children[0].className = "colorBox";
+    }
+  }
+  paintData.color = color;
+  e.className += " selected";
+  console.log(paintData);
+}
+function PaintDialogOverlay() {
   paintData = {
     brush: "PencilBrush",
     color: "#00000",
-    width: 3,
+    width: 50,
   };
   renderColorDom("brashColor", "inputBrushColor", updateBrushColor, true);
   renderRangeSlider("brashRange", "brashRightValue", "brashSize");
 
+  paintMenu.click(() => {
+    $("#paintDialogMain").show();
+    removeInactiveDialogs();
+  });
   const selectedBrush = document.querySelector(`[data-brush=${paintData.brush}]`);
   selectedBrush.className += "selected";
 
@@ -728,11 +649,11 @@ function renderPaintDialogOverlay() {
 
   // Brush Stroke Width
   $("#brashRange")[0].min = 1; // Brush Width Min Setting
-  $("#brashRange")[0].max = 20;
+  $("#brashRange")[0].max = 150;
   $("#brashRightValue")[0].innerText = paintData.width;
   $("#brashRange")[0].value = paintData.width;
   $("#brashRange").on("input", (e) => {
-    paintData.width = e.target.value;
+    paintData.width = parseInt(e.target.value);
     $("#brashRightValue")[0].innerText = paintData.width;
     $("#brashRange")[0].value = paintData.width;
   });
@@ -745,7 +666,13 @@ function renderPaintDialogOverlay() {
   $("#paintOk").click(() => {
     $("#paintDialogMain").hide();
     canvas.set({ isDrawingMode: true });
+    $("#centerToolBarMenu")[0].innerHTML = "";
+    $("#centerToolBarMenu")[0].style.width = "100%";
 
+    $("#centerToolBarMenu").append(`<p onclick="cancelDrawing()">Cancel Drawing</p>`);
+    $("#centerToolBarMenu").append(
+      `<p onclick="canvas._objects.pop(); canvas.renderAll()">Undo</p>`
+    );
     if (paintData.brush === "PencilBrush" || paintData.brush === "CircleBrush") {
       canvas.freeDrawingBrush = new fabric[paintData.brush](canvas);
     } else {
@@ -763,23 +690,6 @@ function renderPaintDialogOverlay() {
     console.log(paintData);
   });
 }
-
-// Brush Selection
-function selectBrush(e, brushName) {
-  const brush = document.querySelector(".brash");
-  for (image of brush.children) {
-    image.className = "";
-  }
-  paintData.brush = brushName;
-  e.target.className += "selected";
-}
-function updateBrushColor(color) {
-  paintData.color = color;
-  const choosed = document.querySelector(`[data-color-code="${color}"]`);
-  choosed.className += " selected";
-  console.log(choosed);
-}
-
 // Brush Stroke
 function brushCollections(paintData, brushName) {
   fabric.Object.prototype.transparentCorners = false;
@@ -787,11 +697,11 @@ function brushCollections(paintData, brushName) {
     var vLinePatternBrush = new fabric.PatternBrush(canvas);
     vLinePatternBrush.getPatternSrc = function () {
       var patternCanvas = fabric.document.createElement("canvas");
-      patternCanvas.width = patternCanvas.height = 10;
+      patternCanvas.width = patternCanvas.height = 10; //paintData.width;
       var ctx = patternCanvas.getContext("2d");
 
       ctx.strokeStyle = paintData.color;
-      ctx.lineWidth = paintData.width;
+      ctx.lineWidth = 5; //paintData.width;
       ctx.beginPath();
       ctx.moveTo(0, 5);
       ctx.lineTo(10, 5);
@@ -804,11 +714,11 @@ function brushCollections(paintData, brushName) {
     var hLinePatternBrush = new fabric.PatternBrush(canvas);
     hLinePatternBrush.getPatternSrc = function () {
       var patternCanvas = fabric.document.createElement("canvas");
-      patternCanvas.width = patternCanvas.height = 10;
+      patternCanvas.width = patternCanvas.height = 10; //paintData.width;
       var ctx = patternCanvas.getContext("2d");
 
       ctx.strokeStyle = paintData.color;
-      ctx.lineWidth = paintData.width;
+      ctx.lineWidth = 5;
       ctx.beginPath();
       ctx.moveTo(5, 0);
       ctx.lineTo(5, 10);
@@ -820,8 +730,8 @@ function brushCollections(paintData, brushName) {
 
     var diamondPatternBrush = new fabric.PatternBrush(canvas);
     diamondPatternBrush.getPatternSrc = function () {
-      var squareWidth = 10,
-        squareDistance = 5;
+      var squareWidth = 10;
+      squareDistance = 10;
       var patternCanvas = fabric.document.createElement("canvas");
       var rect = new fabric.Rect({
         width: squareWidth,
@@ -832,7 +742,8 @@ function brushCollections(paintData, brushName) {
 
       var canvasWidth = rect.getBoundingRect().width;
 
-      patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
+      patternCanvas.width = patternCanvas.height = canvasWidth;
+      +squareDistance;
       rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
 
       var ctx = patternCanvas.getContext("2d");
@@ -857,19 +768,20 @@ function brushCollections(paintData, brushName) {
     };
 
     var img = new Image();
-    img.src = "./icons/right.png";
+    img.src = "./icons/text.svg";
 
     var texturePatternBrush = new fabric.PatternBrush(canvas);
     texturePatternBrush.source = img;
   }
+
   switch (brushName) {
     case "squarePatternBrush":
       canvas.freeDrawingBrush = squarePatternBrush;
       return squarePatternBrush;
       break;
     case "diamondPatternBrush":
-      canvas.freeDrawingBrush = diamondPatternBrush;
-      return diamondPatternBrush;
+      canvas.freeDrawingBrush = texturePatternBrush; //diamondPatternBrush;
+      return texturePatternBrush; //diamondPatternBrush;
       break;
     case "hLinePatternBrush":
       canvas.freeDrawingBrush = hLinePatternBrush;
@@ -879,5 +791,163 @@ function brushCollections(paintData, brushName) {
       canvas.freeDrawingBrush = vLinePatternBrush;
       return vLinePatternBrush;
       break;
+  }
+}
+function cancelDrawing() {
+  canvas.isDrawingMode = false;
+  $("#centerToolBarMenu")[0].innerHTML = "";
+  $("#centerToolBarMenu")[0].style.width = "0%";
+}
+
+// Shape
+function shapeMenuHandler() {
+  $("#shapeRoot").length ? $("#shapeRoot").show() : $("#shapeRoot").remove();
+  removeInactiveDialogs();
+
+  renderShapeDialogItems();
+
+  document.getElementById("shapeImages").children[0].className += " selected";
+
+  // Shape Fill Color
+  $("#shapeFillPicker")[0].value = shapeData.fillColor;
+  $("#shapeFillPicker").on("input", (e) => {
+    shapeData.fillColor = e.target.value;
+  });
+
+  $("#shapeOkBtn").click(() => {
+    canvas.add(generateShape(shapeData));
+    console.log("shapeData", shapeData);
+    console.log("canvasData", generateShape(shapeData));
+    canvas.renderAll();
+    $("#shapeRoot").remove();
+  });
+
+  $("#shapeCancelBtn").click(() => {
+    $("#shapeRoot").remove();
+  });
+}
+const selectedShape = (el, shape) => {
+  const shapeImages = document.getElementById("shapeImages");
+  for (image of shapeImages.children) {
+    image.classList.remove("selected");
+  }
+  shapeData.shape = shape;
+  el.className += "selected";
+};
+
+const generateShape = (shapeData) => {
+  var rec = new fabric.Rect({
+    top: 50,
+    left: 50,
+    width: 100,
+    height: 100,
+    fill: shapeData.fillColor,
+    stroke: shapeData.strokeColor,
+    strokeWidth: shapeData.stroke,
+  });
+
+  var cir = new fabric.Circle({
+    top: 10,
+    left: 100,
+    radius: 65,
+    fill: shapeData.fillColor,
+    stroke: shapeData.strokeColor,
+    strokeWidth: shapeData.stroke,
+  });
+
+  var tri = new fabric.Triangle({
+    top: 10,
+    left: 200,
+    width: 200,
+    height: 100,
+    fill: shapeData.fillColor,
+    stroke: shapeData.strokeColor,
+    strokeWidth: shapeData.stroke,
+  });
+
+  var eli = new fabric.Ellipse({
+    top: 150,
+    left: 10,
+    /* Try same values rx, ry => circle */
+    rx: 75,
+    ry: 50,
+    fill: shapeData.fillColor,
+    stroke: shapeData.strokeColor,
+    strokeWidth: 4,
+  });
+
+  var trapezoid = [
+    { x: -100, y: -50 },
+    { x: 100, y: -50 },
+    { x: 150, y: 50 },
+    { x: -150, y: 50 },
+  ];
+  var emerald = [
+    { x: 850, y: 75 },
+    { x: 958, y: 137.5 },
+    { x: 958, y: 262.5 },
+    { x: 850, y: 325 },
+    { x: 742, y: 262.5 },
+    { x: 742, y: 137.5 },
+  ];
+  var star4 = [
+    { x: 0, y: 0 },
+    { x: 100, y: 50 },
+    { x: 200, y: 0 },
+    { x: 150, y: 100 },
+    { x: 200, y: 200 },
+    { x: 100, y: 150 },
+    { x: 0, y: 200 },
+    { x: 50, y: 100 },
+    { x: 0, y: 0 },
+  ];
+  var star5 = [
+    { x: 350, y: 75 },
+    { x: 380, y: 160 },
+    { x: 470, y: 160 },
+    { x: 400, y: 215 },
+    { x: 423, y: 301 },
+    { x: 350, y: 250 },
+    { x: 277, y: 301 },
+    { x: 303, y: 215 },
+    { x: 231, y: 161 },
+    { x: 321, y: 161 },
+  ];
+  var shape = new Array(trapezoid, emerald, star4, star5);
+
+  var polyg = new fabric.Polygon(shape[1], {
+    top: 180,
+    left: 200,
+    fill: shapeData.fillColor,
+    stroke: shapeData.strokeColor,
+    strokeWidth: shapeData.stroke,
+  });
+
+  switch (shapeData.shape) {
+    case "circle.svg":
+      return cir;
+      break;
+    case "poli.svg":
+      return polyg;
+      break;
+    case "rect.svg":
+      return rec;
+      break;
+    case "traingle.svg":
+      return tri;
+      break;
+  }
+};
+
+function shapeFillColor(color) {
+  shapeData.fillColor = color;
+  const shapeColors = document.getElementById("shapeColorHolder");
+  for (colorItems of shapeColors.children) {
+    colorItems.children[0].classList.remove("circleSelected");
+    if (colorItems.children[0].className === "colorBox") {
+      if (colorItems.children[0].attributes[1].value === color) {
+        colorItems.children[0].className += " circleSelected";
+      }
+    }
   }
 }

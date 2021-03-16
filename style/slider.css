@@ -24,6 +24,10 @@
   width: 24px;
 }
 
+#centerToolBarMenu {
+  display: contents;
+}
+
 #formatingMenus img {
   background-color: rgb(255 255 255 / 86%);
   width: 30px;
@@ -396,7 +400,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 /* Paint Dialog Overlay */
-#paintDialogMain {
+.DialogMain {
   width: 100%;
   left: 0;
   top: 0;
@@ -408,19 +412,19 @@ input[type="range"]::-webkit-slider-runnable-track {
   align-items: center;
   background: rgba(0, 0, 0, 0.8);
 }
-.paintMenus {
+.dialogContainer {
   width: 80%;
   background-color: #fff;
   padding: 1rem;
   border-radius: 2px;
 }
-.paintMenus .brash {
+.dialogContainer .images {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin: 1rem auto;
 }
-.paintMenus .brash img {
+.dialogContainer .images img {
   width: 35px;
   height: 35px;
   padding: 5px;
@@ -435,6 +439,4 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .brashButtons button {
   padding: 0.3rem 0.8rem;
-  /* border: none;
-  outline: none; */
 }

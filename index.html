@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./style/template.css" />
     <script src="./scripts/hammer.js"></script>
     <script src="./scripts/fabric.js"></script>
+    <script src="./scripts/Render.js"></script>
 
     <link
       rel="stylesheet"
@@ -62,6 +63,9 @@
       <div class="arrow">
         <img src="./icons/left-arrow.svg" />
       </div>
+      <p onclick="canvas.remove(...canvas._objects)">Clear All</p>
+      <div id="centerToolBarMenu"></div>
+      <!-- <p onclick="canvas._objects.pop(); canvas.renderAll()">Undo</p> -->
       <div id="formatingMenus" style="display: none">
         <!-- Js Line : 440 -->
         <img src="./icons/center.svg" class="textAlign" />
@@ -99,7 +103,7 @@
           </div>
         </div>
 
-        <div class="slider-Item">
+        <div class="slider-Item" id="MenuShape">
           <div class="alignItem">
             <img src="./icons/main-menu/shapes.png" />
             <p>Shape</p>
@@ -107,7 +111,7 @@
         </div>
 
         <div class="slider-Item">
-          <div class="alignItem">
+          <div class="alignItem" id="menuPaint">
             <img src="./icons/main-menu/paint.png" />
             <p>Paint</p>
           </div>
@@ -254,9 +258,9 @@
     </div>
 
     <!-- Paint Dialog Overlay -->
-    <div id="paintDialogMain">
-      <div class="paintMenus">
-        <div class="brash">
+    <div id="paintDialogMain" class="DialogMain">
+      <div class="dialogContainer">
+        <div class="images">
           <img
             src="./icons/paint/pencil-stroke.svg"
             onclick="selectBrush(event, 'PencilBrush')"
