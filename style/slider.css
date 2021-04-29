@@ -44,10 +44,12 @@
   left: 0;
 }
 .slider-container {
+  width: 400px;
   display: flex;
   justify-content: space-between;
   padding-left: 5px;
   margin-top: 7px;
+  margin: 7px auto;
 }
 .slider-Item {
   /* width: 100%;
@@ -148,6 +150,7 @@
   bottom: 116px;
   height: 50px;
   width: 100%;
+  left: 0;
   box-shadow: 0 0 5px 0 #444;
   background-color: #333;
   color: #fff;

@@ -27,7 +27,8 @@
 }
 
 body {
-  /* box-sizing: border-box; */
+  max-width: 400px;
+  margin: 0 auto;
   overflow: hidden;
   background-color: #444;
   -webkit-touch-callout: none;
@@ -277,7 +278,9 @@ button {
 
 /* Default Div Behaviour */
 #templateChooserRoot {
+  width: 411px;
   display: block;
+  margin: 0 auto;
 }
 
 .selected {

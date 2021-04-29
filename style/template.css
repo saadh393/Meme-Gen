@@ -35,7 +35,7 @@
   justify-content: start;
   gap: 10px;
   padding: 10px;
-  overflow-y: scroll; /*added*/
+  overflow-y: hidden; /*added*/
 }
 
 .templates img {
