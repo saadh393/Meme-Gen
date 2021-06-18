@@ -1,5 +1,7 @@
 # Meme App Editor
-<span style="color:red">This Project is still under construction. You may face lots of trouble right now</span>.
+```diff
+- This Project is still under construction. You may face lots of trouble right now
+```
 
 This is a simple part of Meme Generator App. This app is not completed yet but still you can create meme. Obviously, There is lot's of bugs and error, Please let me know if you found any.
 For Experiment purpose, I've added only 4/6 templates, I know which is not sufficient. I hope soon I can finish this project. Feel free to contribute. 
